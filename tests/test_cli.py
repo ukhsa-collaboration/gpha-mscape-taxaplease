@@ -207,7 +207,7 @@ def test_current_taxid():
 
 
 def test_deleted_taxid():
-    deletedTaxid = 3400745
+    deletedTaxid = 3467805
 
     result = subprocess.run(
         ["taxaplease", "check", "--status", str(deletedTaxid)],

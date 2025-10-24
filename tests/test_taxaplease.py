@@ -138,7 +138,7 @@ def test_current_taxid():
 def test_deleted_taxid():
     taxaPlease = TaxaPlease()
 
-    deletedTaxid = 3400745
+    deletedTaxid = 3467805
 
     assert taxaPlease.checkTaxidStatus(deletedTaxid) == {
         "isCurrent": False,
@@ -158,3 +158,12 @@ def test_merged_taxid():
         "isDeleted": False,
         "isMerged": photobacteriumProfundumNew,
     }
+
+def test_phages():
+    taxaPlease = TaxaPlease()
+
+    topLevelPhage = 2731619 ## Caudoviricetes
+    subLevelPhage = 2560487 ## Bowservirus bowser
+
+    assert taxaPlease.isPhage(topLevelPhage)
+    assert taxaPlease.isPhage(subLevelPhage)

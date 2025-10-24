@@ -1,13 +1,17 @@
 import os
+import requests
 import sqlite3
 import tempfile
 import functools
 import networkx as nx
+import taxaplease_data as tpData
 from typing import Optional
 from pathlib import Path
+from bs4 import BeautifulSoup as bs
+from urllib.parse import urljoin
 
 
-__version__ = "1.0.1"
+__version__ = "1.1.0"
 
 
 class TaxaPlease:
@@ -18,6 +22,9 @@ class TaxaPlease:
     def __init__(self):
         self.con = self._init_database_connection()
         self.column_names = self._init_column_names()
+        self.phages = tpData.PHAGES
+        self.baltimore = tpData.BALTIMORE_CLASSIFICATION
+        self.viral_realms = tpData.VIRAL_REALMS
 
     def _init_database_connection(self):
         db_dir = os.path.join(Path.home(), ".taxaplease")
@@ -33,11 +40,16 @@ class TaxaPlease:
 
         return sqlite3.connect(db_path)
 
-    def _create_database(self):
+    def _create_database(self, taxonomy_url=None):
         import database_generation.generate_database as gd
 
         with tempfile.TemporaryDirectory() as tempdir:
-            gd.main(tempdir)
+            if taxonomy_url:
+                ## if specified, use that
+                gd.main(tempdir, taxonomy_url)
+            else:
+                ## else use the latest
+                gd.main(tempdir)
 
     def _init_column_names(self) -> list:
         """
@@ -48,6 +60,68 @@ class TaxaPlease:
         cur = self.con.cursor()
         cur.execute("SELECT * FROM taxa LIMIT 0")
         return list(map(lambda x: x[0], cur.description))
+
+    def set_taxonomy_url(self, url: str):
+        self._create_database(url)
+
+        return None
+
+    @staticmethod
+    def __process_file_listing(file_listing, url):
+        """
+        Helper function only used by get_taxonomy_url
+
+        Parameters
+        ----------
+        file_listing: list
+            A list of <a> tags from a beautifulsoup findall query
+        url: str
+            A URL to be added to the front of the filename in the file listing
+
+        Returns
+        -------
+        List
+            A list of absolute URLs
+        """
+        relative_url_list = list(
+            filter(
+                lambda x: x.endswith(".zip") or x.endswith(".tar.gz"),
+                map(lambda x: x.get("href"), file_listing),
+            )
+        )
+
+        absolute_url_list = [
+            urljoin(url, os.path.basename(x)) for x in relative_url_list
+        ]
+
+        return absolute_url_list
+
+    def get_taxonomy_url(self) -> dict:
+        """
+        Gets a dictionary of valid taxonomy database URLs.
+
+        Keys: latest, archive
+        Values: list of fully qualified URLs for each database file
+        """
+        taxdump_archive_page = "https://ftp.ncbi.nih.gov/pub/taxonomy/taxdump_archive/"
+        taxdump_latest_page = "https://ftp.ncbi.nih.gov/pub/taxonomy/new_taxdump/"
+
+        td_archive = bs(requests.get(taxdump_archive_page).text, features="html.parser")
+        td_latest = bs(requests.get(taxdump_latest_page).text, features="html.parser")
+
+        file_listing_archive = self.__process_file_listing(
+            td_archive.find_all(name="a"), taxdump_archive_page
+        )
+        file_listing_latest = self.__process_file_listing(
+            td_latest.find_all(name="a"), taxdump_latest_page
+        )
+
+        available_taxdump_files = {
+            "latest": file_listing_latest,
+            "archive": file_listing_archive,
+        }
+
+        return available_taxdump_files
 
     def get_parent_taxid(self, inputTaxid: int | str) -> Optional[int]:
         """
@@ -275,7 +349,7 @@ class TaxaPlease:
 
             if not tempTaxa:
                 break
-            
+
             return_list.append(tempTaxa)
 
         return tuple(return_list)
@@ -411,7 +485,7 @@ class TaxaPlease:
             True it is or False it isn't
         """
         targetTaxid = 2157
-        return targetTaxid in self.get_all_parent_taxids(inputTaxid)
+        return targetTaxid in self.get_all_parent_taxids(inputTaxid, includeSelf=True)
 
     def isBacteria(self, inputTaxid: int | str) -> bool:
         """
@@ -428,7 +502,7 @@ class TaxaPlease:
             True it is or False it isn't
         """
         targetTaxid = 2
-        return targetTaxid in self.get_all_parent_taxids(inputTaxid)
+        return targetTaxid in self.get_all_parent_taxids(inputTaxid, includeSelf=True)
 
     def isEukaryote(self, inputTaxid: int | str) -> bool:
         """
@@ -445,7 +519,7 @@ class TaxaPlease:
             True it is or False it isn't
         """
         targetTaxid = 2759
-        return targetTaxid in self.get_all_parent_taxids(inputTaxid)
+        return targetTaxid in self.get_all_parent_taxids(inputTaxid, includeSelf=True)
 
     def isVirus(self, inputTaxid: int | str) -> bool:
         """
@@ -462,7 +536,32 @@ class TaxaPlease:
             True it is or False it isn't
         """
         targetTaxid = 10239
-        return targetTaxid in self.get_all_parent_taxids(inputTaxid)
+
+        ## check the parents
+        return targetTaxid in self.get_all_parent_taxids(inputTaxid, includeSelf=True)
+
+    def isPhage(self, inputTaxid: int | str) -> bool:
+        """
+        Is the input taxid a phage?
+
+        Parameters
+        ----------
+        inputTaxidLeft: int or str
+            NCBI taxid
+
+        Returns
+        -------
+        bool:
+            True it is or False it isn't
+        """
+        ## check the parents
+        parents = set(self.get_all_parent_taxids(inputTaxid, includeSelf=True))
+        ## get all the phage taxids
+        phages = set(list(self.phages.keys()))
+        ## check if the sets have any items in common
+        intersection = phages.intersection(parents)
+
+        return bool(len(intersection))
 
     def __checkIfTaxidDeleted(self, inputTaxid: int | str) -> bool:
         """
@@ -531,9 +630,7 @@ class TaxaPlease:
 
         return return_dict
 
-    def generate_taxonomy_graph(
-        self, *args
-    ) -> nx.DiGraph:
+    def generate_taxonomy_graph(self, *args) -> nx.DiGraph:
         """
         Takes in taxids as positional arguments, gets all the parents
         and returns a networkx directed graph of the result.
@@ -566,9 +663,7 @@ class TaxaPlease:
         ## return graph object
         return graph
 
-    def print_taxonomy_graph(
-        self, *args
-    ) -> str:
+    def print_taxonomy_graph(self, *args) -> str:
         """
         Takes in taxids as arguments, gets all the parents,
         generates a networkx directed graph of the result and
@@ -587,7 +682,7 @@ class TaxaPlease:
             -1
         """
         taxgraph = self.generate_taxonomy_graph(*args)
-        
+
         ## write_network_text just writes straight
         ## to the terminal. Not sure how you get
         ## just a string as output. generate_network_text
@@ -598,3 +693,41 @@ class TaxaPlease:
         ## by returning -1, which we will
         ## detect in the CLI
         return -1
+    
+    def get_baltimore_classification(self, inputTaxid: int | str) -> Optional[str]:
+        """
+        Takes in a taxid
+
+        Returns Baltimore classification if applicable, or None
+        if either the taxid either not a Virus, or not in the
+        lookup dictionary.
+
+        Technically the Baltimore classification should be a
+        Group number from I to VII, but I choose to return the
+        corresponding type of nucleic acid and sense instead.
+
+        Parameters
+        ----------
+        inputTaxid int or str
+            NCBI taxid
+
+        Returns
+        -------
+        Optional[str]
+            Baltimore classification as a string (for example, -ssRNA)
+            or None
+        """
+        if not self.isVirus(inputTaxid):
+            return None
+        
+        parents = set(self.get_all_parent_taxids(inputTaxid, includeSelf=True))
+        baltimore_keys = set(self.baltimore)
+
+        intersection = parents.intersection(baltimore_keys)
+
+        if len(intersection):
+            ## get the key, and use that to get the value
+            return self.baltimore[list(intersection)[0]]
+        else:
+            ## got nothing
+            return None
