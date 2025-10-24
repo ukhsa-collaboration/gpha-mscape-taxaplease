@@ -1,6 +1,7 @@
 import json
 import argparse
 from taxaplease import TaxaPlease
+from taxaplease import __version__ as tpVersion
 
 
 def init_argparser():
@@ -15,10 +16,15 @@ def init_argparser():
     parser_taxid = subparsers.add_parser("taxid", help="Return a taxid")
     parser_record = subparsers.add_parser("record", help="Return a full taxon record")
     parser_check = subparsers.add_parser("check", help="Check metadata")
+    parser_version = subparsers.add_parser("version", help="Print version information")
+    parser_taxonomy = subparsers.add_parser(
+        "taxonomy", help="Get valid taxonomy URLs and set taxaPlease to use them"
+    )
 
     group_taxid = parser_taxid.add_mutually_exclusive_group()
     group_record = parser_record.add_mutually_exclusive_group()
     group_check = parser_check.add_mutually_exclusive_group()
+    group_taxonomy = parser_taxonomy.add_mutually_exclusive_group()
 
     ## taxids
     group_taxid.add_argument("--parent", help="Get the parent taxid", metavar="<taxid>")
@@ -90,6 +96,17 @@ def init_argparser():
         metavar="<taxid>",
     )
 
+    ## taxonomy
+    group_taxonomy.add_argument(
+        "--set",
+        help="Set the URL for the taxonomy database used by taxaPlease"
+    )
+    group_taxonomy.add_argument(
+        "--get",
+        help="Get a dictionary of valid taxonomy database URLs",
+        action="store_true",
+    )
+
     return parser
 
 
@@ -140,6 +157,15 @@ def handle_check_request(args, taxapleaseObj):
         return "Usage: taxaplease check -h"
 
 
+def handle_taxonomy_request(args, taxapleaseObj):
+    if args.get:
+        return taxapleaseObj.get_taxonomy_url()
+    elif args.set:
+        return taxapleaseObj.set_taxonomy_url(args.set)
+    else:
+        return "Usage: taxaplease taxonomy -h"
+
+
 def main():
     args = init_argparser().parse_args()
 
@@ -154,6 +180,11 @@ def main():
             result = handle_record_request(args, tp)
         case "check":
             result = handle_check_request(args, tp)
+        case "version":
+            result = {"taxaplease_version": tpVersion}
+        case "taxonomy":
+            handle_taxonomy_request(args, tp)
+            result = -1
         case _:
             raise Exception(f"Unknown subcommand {args.subcommand}")
 

@@ -1,5 +1,25 @@
 # Changelog
 
+## [v1.1.0] - 2025-10-24
+
+Various quality of life updates.
+
+### Added
+
+`get_taxonomy_url()` and `set_taxonomy_url()` have been added for retrieving a list of valid NCBI taxdump URLs and setting taxaPlease to use them respectively.
+
+The taxaplease CLI utility now has a `version` command, along with `taxonomy --get` and `taxonomy --set` commands surfacing the above 2 functions.
+
+Dependency on beautifulsoup4 added.
+
+### Changed
+
+None
+
+### Fixed
+
+None
+
 ## [v1.0.1] - 2025-10-24
 
 Migration of code to gpha-mscape-template format for GitHub.

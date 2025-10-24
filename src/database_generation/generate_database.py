@@ -39,17 +39,15 @@ def download_file(url, *, destinationDir=None):
     return local_filename
 
 
-def main(tempdir):
+def main(
+    tempdir,
+    ncbi_taxonomy_data_url="https://ftp.ncbi.nih.gov/pub/taxonomy/new_taxdump/new_taxdump.tar.gz",
+):
     start_time = datetime.datetime.now()
 
     #######################################
     # Downloading and extracting the data #
     #######################################
-
-    ## location of the data
-    ncbi_taxonomy_data_url = (
-        "https://ftp.ncbi.nih.gov/pub/taxonomy/new_taxdump/new_taxdump.tar.gz"
-    )
 
     ## download the data
     print(f"{datetime.datetime.now()} Downloading {ncbi_taxonomy_data_url}")
@@ -59,7 +57,9 @@ def main(tempdir):
 
     ## extract the archive to a subfolder
     print(f"{datetime.datetime.now()} Extracting {ncbi_taxonomy_data_compressed}")
-    shutil.unpack_archive(ncbi_taxonomy_data_compressed, extract_dir=os.path.join(tempdir, "new_taxdump"))
+    shutil.unpack_archive(
+        ncbi_taxonomy_data_compressed, extract_dir=os.path.join(tempdir, "new_taxdump")
+    )
 
     ## technically I think you could download the stream straight into
     ## the gzip extrator, but this works.
@@ -138,6 +138,16 @@ def main(tempdir):
     print(f"{datetime.datetime.now()} Writing merged_taxa table to taxa.db")
     merged_ids_df.to_sql(
         "merged_taxa", con=conn, index_label="old_taxid", if_exists="replace"
+    )
+
+    ## create a metadata table that contains
+    ## the current taxdatabase URL
+    metadata_table_df = pd.DataFrame(
+        [("ncbi_taxonomy_data_url", ncbi_taxonomy_data_url)]
+    ).rename({0: "key", 1: "value"}, axis=1).set_index("key")
+
+    metadata_table_df.to_sql(
+        "metadata", con=conn, index_label="key", if_exists="replace"
     )
 
     print(f"{datetime.datetime.now()} Done in {datetime.datetime.now() - start_time}")
