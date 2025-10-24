@@ -1,13 +1,14 @@
-[project] # Update all fields in this section
-name = "project-name-here" 
-version = "0.1.0" 
-description = "Short description here"
-authors = [{name = "Author name", email = "email.address@example.com"}] 
-requires-python = ">=3.12" 
-dependencies = ["pandas", "pyyaml", "climb-onyx-client"] 
+[project]
+name = "taxaPlease"
+dynamic = ["version"]
+authors = [{ name = "Ashley Shalloe", email = "ashley.shalloe@ukhsa.gov.uk" }]
+description = "NCBI taxonomy wrangling"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["pandas>=2.2.2", "Requests>=2.32.3", "networkx==3.4.2"]
 
 [tool.setuptools.dynamic]
-version = {attr = "project_name_here.__version__"} # Add underscore separated repo name here
+version = { attr = "taxaplease.__version__" }
 
 [project.optional-dependencies] # Dependencies for developers only - add more if required
 dev = ["ruff>=0.4.10,<0.5", "pytest", "pre-commit"] 
@@ -16,8 +17,8 @@ dev = ["ruff>=0.4.10,<0.5", "pytest", "pre-commit"]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
-[project.scripts] # Update with main repo script here
-qc_sample = "mscape_template.mscape_script:main"
+[project.scripts]
+taxaplease = "cli:main"
 
 [tool.ruff.lint] # Lint rules to follow - add or delete if required
 select = [
