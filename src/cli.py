@@ -91,6 +91,9 @@ def init_argparser():
         "--is-virus", help="Checks if taxid is a virus", metavar="<taxid>"
     )
     group_check.add_argument(
+        "--is-phage", help="Checks if taxid is a phage", metavar="<taxid>"
+    )
+    group_check.add_argument(
         "--status",
         help="Checks if a taxid has been merged or removed",
         metavar="<taxid>",
@@ -149,6 +152,8 @@ def handle_check_request(args, taxapleaseObj):
         return taxapleaseObj.isEukaryote(args.is_eukaryote)
     elif args.is_virus:
         return taxapleaseObj.isVirus(args.is_virus)
+    elif args.is_phage:
+        return taxapleaseObj.isPhage(args.is_phage)
     elif args.status:
         return taxapleaseObj.checkTaxidStatus(args.status)
     elif args.graph:

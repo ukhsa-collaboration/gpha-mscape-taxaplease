@@ -8,17 +8,27 @@ Various quality of life updates.
 
 `get_taxonomy_url()` and `set_taxonomy_url()` have been added for retrieving a list of valid NCBI taxdump URLs and setting taxaPlease to use them respectively.
 
-The taxaplease CLI utility now has a `version` command, along with `taxonomy --get` and `taxonomy --set` commands surfacing the above 2 functions.
+The taxaplease CLI utility now has a `version` command, along with `taxonomy --get` and `taxonomy --set` commands surfacing the above 2 functions, and `check --phage`.
 
 Dependency on beautifulsoup4 added.
 
+Added taxaplease_data - a python file that contains dictionaries with:
+
+* a description of each viral realm
+* a lookup of Baltimore classifications
+* a lookup for phages
+
+Add a `isPhage()` method, using the phage lookup in taxaplease_data. This can be overridden using the `phages` property of a TaxaPlease object.
+
 ### Changed
 
-None
+The taxid used for the deleted taxid test has been changed.
 
 ### Fixed
 
-None
+isEukaryote, isBacteria and other similar methods now check if they have been passed the top level taxid for that domain.
+
+* for example, "Bacteria" has a taxid of "2" - previously isBacteria returned False since it only checked parents, rather than the ID itself
 
 ## [v1.0.1] - 2025-10-24
 

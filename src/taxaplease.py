@@ -4,6 +4,7 @@ import sqlite3
 import tempfile
 import functools
 import networkx as nx
+import taxaplease_data as tpData
 from typing import Optional
 from pathlib import Path
 from bs4 import BeautifulSoup as bs
@@ -21,6 +22,9 @@ class TaxaPlease:
     def __init__(self):
         self.con = self._init_database_connection()
         self.column_names = self._init_column_names()
+        self.phages = tpData.PHAGES
+        self.baltimore = tpData.BALTIMORE_CLASSIFICATION
+        self.viral_realms = tpData.VIRAL_REALMS
 
     def _init_database_connection(self):
         db_dir = os.path.join(Path.home(), ".taxaplease")
@@ -481,7 +485,7 @@ class TaxaPlease:
             True it is or False it isn't
         """
         targetTaxid = 2157
-        return targetTaxid in self.get_all_parent_taxids(inputTaxid)
+        return targetTaxid in self.get_all_parent_taxids(inputTaxid, includeSelf=True)
 
     def isBacteria(self, inputTaxid: int | str) -> bool:
         """
@@ -498,7 +502,7 @@ class TaxaPlease:
             True it is or False it isn't
         """
         targetTaxid = 2
-        return targetTaxid in self.get_all_parent_taxids(inputTaxid)
+        return targetTaxid in self.get_all_parent_taxids(inputTaxid, includeSelf=True)
 
     def isEukaryote(self, inputTaxid: int | str) -> bool:
         """
@@ -515,7 +519,7 @@ class TaxaPlease:
             True it is or False it isn't
         """
         targetTaxid = 2759
-        return targetTaxid in self.get_all_parent_taxids(inputTaxid)
+        return targetTaxid in self.get_all_parent_taxids(inputTaxid, includeSelf=True)
 
     def isVirus(self, inputTaxid: int | str) -> bool:
         """
@@ -532,7 +536,32 @@ class TaxaPlease:
             True it is or False it isn't
         """
         targetTaxid = 10239
-        return targetTaxid in self.get_all_parent_taxids(inputTaxid)
+
+        ## check the parents
+        return targetTaxid in self.get_all_parent_taxids(inputTaxid, includeSelf=True)
+
+    def isPhage(self, inputTaxid: int | str) -> bool:
+        """
+        Is the input taxid a phage?
+
+        Parameters
+        ----------
+        inputTaxidLeft: int or str
+            NCBI taxid
+
+        Returns
+        -------
+        bool:
+            True it is or False it isn't
+        """
+        ## check the parents
+        parents = set(self.get_all_parent_taxids(inputTaxid, includeSelf=True))
+        ## get all the phage taxids
+        phages = set(list(self.phages.keys()))
+        ## check if the sets have any items in common
+        intersection = phages.intersection(parents)
+
+        return bool(len(intersection))
 
     def __checkIfTaxidDeleted(self, inputTaxid: int | str) -> bool:
         """
@@ -664,3 +693,6 @@ class TaxaPlease:
         ## by returning -1, which we will
         ## detect in the CLI
         return -1
+    
+    def get_baltimore_classification(self, inputTaxid: int | str) -> Optional[str]:
+        return
