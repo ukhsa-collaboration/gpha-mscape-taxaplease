@@ -695,4 +695,39 @@ class TaxaPlease:
         return -1
     
     def get_baltimore_classification(self, inputTaxid: int | str) -> Optional[str]:
-        return
+        """
+        Takes in a taxid
+
+        Returns Baltimore classification if applicable, or None
+        if either the taxid either not a Virus, or not in the
+        lookup dictionary.
+
+        Technically the Baltimore classification should be a
+        Group number from I to VII, but I choose to return the
+        corresponding type of nucleic acid and sense instead.
+
+        Parameters
+        ----------
+        inputTaxid int or str
+            NCBI taxid
+
+        Returns
+        -------
+        Optional[str]
+            Baltimore classification as a string (for example, -ssRNA)
+            or None
+        """
+        if not self.isVirus(inputTaxid):
+            return None
+        
+        parents = set(self.get_all_parent_taxids(inputTaxid, includeSelf=True))
+        baltimore_keys = set(self.baltimore)
+
+        intersection = parents.intersection(baltimore_keys)
+
+        if len(intersection):
+            ## get the key, and use that to get the value
+            return self.baltimore[list(intersection)[0]]
+        else:
+            ## got nothing
+            return None

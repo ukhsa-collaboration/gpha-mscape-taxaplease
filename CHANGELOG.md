@@ -8,7 +8,7 @@ Various quality of life updates.
 
 `get_taxonomy_url()` and `set_taxonomy_url()` have been added for retrieving a list of valid NCBI taxdump URLs and setting taxaPlease to use them respectively.
 
-The taxaplease CLI utility now has a `version` command, along with `taxonomy --get` and `taxonomy --set` commands surfacing the above 2 functions, and `check --phage`.
+The taxaplease CLI utility now has a `version` command, along with `taxonomy --get` and `taxonomy --set` commands surfacing the above 2 functions, `check --phage` and `check --baltimore`.
 
 Dependency on beautifulsoup4 added.
 
@@ -19,6 +19,8 @@ Added taxaplease_data - a python file that contains dictionaries with:
 * a lookup for phages
 
 Add a `isPhage()` method, using the phage lookup in taxaplease_data. This can be overridden using the `phages` property of a TaxaPlease object.
+
+Add a `get_baltimore_classification()` method, using the Baltimore classification lookup in taxaplease_data. Can similarly be overridden if required.
 
 ### Changed
 

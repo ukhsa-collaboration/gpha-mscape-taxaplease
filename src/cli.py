@@ -98,6 +98,11 @@ def init_argparser():
         help="Checks if a taxid has been merged or removed",
         metavar="<taxid>",
     )
+    group_check.add_argument(
+        "--baltimore",
+        help="Checks the Baltimore classification of a virus",
+        metavar="<taxid>",
+    )
 
     ## taxonomy
     group_taxonomy.add_argument(
@@ -158,6 +163,8 @@ def handle_check_request(args, taxapleaseObj):
         return taxapleaseObj.checkTaxidStatus(args.status)
     elif args.graph:
         return taxapleaseObj.print_taxonomy_graph(*args.graph)
+    elif args.baltimore:
+        return taxapleaseObj.get_baltimore_classification(args.baltimore)
     else:
         return "Usage: taxaplease check -h"
 
