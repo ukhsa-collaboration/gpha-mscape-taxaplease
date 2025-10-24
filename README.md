@@ -1,57 +1,66 @@
-# mscape-template
+# gpha-mscape-taxaplease
 
-This repository is a template for creating new repositories containing  
-code that will run on mSCAPE. It serves as a guide for code layout  
-and files will need amending to fit the repo purpose.  
+## What is this?
 
-As a minimum, mSCAPE repositories should include the following:
-- Code to be in src/ layout 
-- tests/ folder at same level as src/ 
-- .github/ folder containing workflows and a pull request template
-- .gitignore file
-- pyproject.toml file
-- .pre-commit-hooks.yaml
+taxaPlease: A CLI utility and importable python module for wrangling NCBI taxids.
 
-This repo follows the above structure and contains examples of the files  
-referenced above.
+## Installation?
 
-A ssuggested layout for repo READMEs is included below. The guidance  
-documentation contains further information on required repository  
-structure, development cycles, and making pull requests. Please read  
-this guidance document before using the template.
+```bash
+## pip install straight from the github repo
+pip install git+https://github.com/ukhsa-collaboration/gpha-mscape-taxaplease.git
+```
 
-# mscape-template
+When first instantiated, an NCBI taxonomy database will be downloaded. This only happens once.
 
-Brief description of project here
+## What can it do?
 
-## Installation
+For a given taxid, we can:
 
-Add installation instructions here. Ideally include commands to make  
-the process as easy as possible for users.  
+* get metadata (taxa name, rank, parent taxid)
+* get the parent taxid
+* find the corresponding species-level taxid
+* find the corresponding genus-level taxid
+* given two taxids, find the common parent taxid
+* given two taxids, how many levels ("ranks") are between:
+  * those two taxids (sum of the below)
+  * each of those taxids and their common parent taxa
+* given a taxid, is it:
+  * Archaea?
+  * Eukaryota?
+  * Bacteria?
+  * Virus?
 
-Clone repo and create environment:  
-`git clone git@github.com:ukhsa-collaboration/mscape-template.git`  
+## How do I use it?
 
-`conda env create -n mscape_template `  
+To use it in your code, have a look at `demo.iypnb` or just jump in and `from taxaplease import TaxaPlease`.
 
-`conda activate mscape_template`  
+If you just want a commandline tool, try `taxaplease -h` to see what it can do.
 
-Installation for users:  
-`cd mscape-template`  
-`pip install .`
+Realistically, you're probably trying to do one of the following:
 
-Installation for developers (installs code in editable mode):  
-`cd mscape-template`  
-`pip install --editable '.[dev]'`
+```bash
+## get a record given a taxid
+## >> {"taxid": 1337, "name": "Streptococcus hyointestinalis", "rank": "species", "parent_taxid": 1301}
+taxaplease record --record 1337
 
-## Usage
+## get a parent taxid
+## >> 1301
+taxaplease taxid --parent 1337
+```
 
-Include command line arguments (e.g. the output displayed when using -h)  
-for reference. Example commands can also be helpful.
+Each subcommand also has `-h` help information.
 
-## Other sections
+## Where did that database come from?
 
-Add other sections as appropriate for your repo. This may include  
-instructions on updating the repo, instructions on adding new  
-references, troubleshooting etc. 
+From [NCBI](https://ftp.ncbi.nih.gov/pub/taxonomy/new_taxdump/) plus some wrangling.
 
+The code for generating it is in `database_generation/generate_database.py`
+
+## Do you really need to include taxa like wolves and aloe vera?
+
+Maybe not, but they're in there for now.
+
+## Where is the database stored?
+
+In your home directory, in a `.taxaplease` folder. To recreate the database, you can just delete this folder.
