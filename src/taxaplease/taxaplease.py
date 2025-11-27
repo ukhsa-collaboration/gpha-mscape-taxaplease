@@ -4,14 +4,14 @@ import sqlite3
 import tempfile
 import functools
 import networkx as nx
-import taxaplease_data as tpData
+import taxaplease.taxaplease_data as tpData
 from typing import Optional
 from pathlib import Path
 from bs4 import BeautifulSoup as bs
 from urllib.parse import urljoin
 
 
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 
 
 class TaxaPlease:
@@ -41,7 +41,7 @@ class TaxaPlease:
         return sqlite3.connect(db_path)
 
     def _create_database(self, taxonomy_url=None):
-        import database_generation.generate_database as gd
+        import taxaplease.database_generation.generate_database as gd
 
         with tempfile.TemporaryDirectory() as tempdir:
             if taxonomy_url:
