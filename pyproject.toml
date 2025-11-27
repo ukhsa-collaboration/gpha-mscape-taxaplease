@@ -8,7 +8,7 @@ requires-python = ">=3.10"
 dependencies = ["pandas>=2.2.2", "Requests>=2.32.3", "networkx==3.4.2", "beautifulsoup4>=4.14.2"]
 
 [tool.setuptools.dynamic]
-version = { attr = "taxaplease.__version__" }
+version = { attr = "taxaplease.taxaplease.__version__" }
 
 [project.optional-dependencies] # Dependencies for developers only - add more if required
 dev = ["ruff>=0.4.10,<0.5", "pytest", "pre-commit"] 
@@ -18,7 +18,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project.scripts]
-taxaplease = "cli:main"
+taxaplease = "taxaplease.cli:main"
 
 [tool.ruff.lint] # Lint rules to follow - add or delete if required
 select = [

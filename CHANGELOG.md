@@ -1,5 +1,24 @@
 # Changelog
 
+## [v1.1.1] - 2025-11-27
+
+Minor bugfix - code is now in a subfolder within src, rather than being directly under src.
+
+### Added
+
+None
+
+### Changed
+
+None
+
+### Fixed
+
+The src layout changes should avoid any namespace clashes - for example, previously it was possible to run `import cli` 
+which would import the taxaplease commandline interface. This would clash with any other packages that have a module named
+"cli" and was therefore not desireable. By altering the layout, the equivalent import is now `from taxaplease import cli`
+which avoids the namespace clash.
+
 ## [v1.1.0] - 2025-10-24
 
 Various quality of life updates.
