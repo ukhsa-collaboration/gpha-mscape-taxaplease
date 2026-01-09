@@ -12,9 +12,9 @@ def init_argparser():
     )
 
     parser.add_argument(
-        "--database",
-        "-db",
-        dest="database",
+        "--database_directory",
+        "-db_dir",
+        dest="database_directory",
         type=str,
         required=False,
         default=None,
@@ -191,7 +191,7 @@ def handle_taxonomy_request(args, taxapleaseObj):
 def main():
     args = init_argparser().parse_args()
 
-    tp = TaxaPlease(args.database)
+    tp = TaxaPlease(args.database_directory)
 
     result = None
 
