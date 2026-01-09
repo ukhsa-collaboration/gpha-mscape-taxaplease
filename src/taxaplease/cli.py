@@ -11,6 +11,16 @@ def init_argparser():
         epilog="Subcommands have their own help available with -h",
     )
 
+    parser.add_argument(
+        "--database_directory",
+        "-db_dir",
+        dest="database_directory",
+        type=str,
+        required=False,
+        default=None,
+        help="set path to custom database folder",
+    )
+
     ## subparsers are mutually exclusive by default
     subparsers = parser.add_subparsers(required=True, dest="subcommand")
     parser_taxid = subparsers.add_parser("taxid", help="Return a taxid")
@@ -181,7 +191,7 @@ def handle_taxonomy_request(args, taxapleaseObj):
 def main():
     args = init_argparser().parse_args()
 
-    tp = TaxaPlease()
+    tp = TaxaPlease(args.database_directory)
 
     result = None
 

@@ -9,6 +9,7 @@ from typing import Optional
 from pathlib import Path
 from bs4 import BeautifulSoup as bs
 from urllib.parse import urljoin
+import glob
 
 
 __version__ = "1.1.1"
@@ -19,7 +20,8 @@ class TaxaPlease:
     Class for wrangling NCBI taxids
     """
 
-    def __init__(self):
+    def __init__(self, database):
+        self.db = database
         self.con = self._init_database_connection()
         self.column_names = self._init_column_names()
         self.phages = tpData.PHAGES
@@ -27,8 +29,15 @@ class TaxaPlease:
         self.viral_realms = tpData.VIRAL_REALMS
 
     def _init_database_connection(self):
-        db_dir = os.path.join(Path.home(), ".taxaplease")
-        db_path = os.path.join(db_dir, "taxa.db")
+        # if there is no database argument -> default setting, if there is a database argument -> use folder & search
+        # for .db file inside
+        if self.db is None:
+            db_dir = os.path.join(Path.home(), ".taxaplease")
+            db_path = os.path.join(db_dir, "taxa.db")
+        else:
+            db_dir =  os.path.normpath(self.db)
+            file = [f for f in os.listdir(db_dir) if f.endswith('.db')][0]
+            db_path = os.path.join(db_dir, file)
 
         ## if the folder doesn't exist, create it
         if not os.path.isdir(db_dir):
@@ -37,7 +46,6 @@ class TaxaPlease:
         ## if the database doesn't exist, create it
         if not os.path.isfile(db_path):
             self._create_database()
-
         return sqlite3.connect(db_path)
 
     def _create_database(self, taxonomy_url=None):

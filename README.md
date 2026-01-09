@@ -64,3 +64,14 @@ Maybe not, but they're in there for now.
 ## Where is the database stored?
 
 In your home directory, in a `.taxaplease` folder. To recreate the database, you can just delete this folder.
+
+## But I want to use my own database!?
+
+As of 09.01.2025 you can supply TaxaPlease with your own database! 
+
+Just provide the path to the folder the .db file is located following the --database_directory command.
+
+```bash
+## use a custom database
+taxaplease --database_directory {path-to-database-folder} record --record 1337
+```
