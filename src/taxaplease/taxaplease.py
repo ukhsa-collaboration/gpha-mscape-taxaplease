@@ -645,7 +645,7 @@ class TaxaPlease:
 
         Parameters
         ----------
-        *args
+        args
 
         Returns
         -------
@@ -681,7 +681,7 @@ class TaxaPlease:
 
         Parameters
         ----------
-        *args int or str
+        args int or str
             NCBI taxid
 
         Returns
