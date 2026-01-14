@@ -1,5 +1,14 @@
 # Changelog
 
+
+## [v1.1.2] - 2026-01-14
+
+### Added Feature
+Ability to supply TaxaPlease with your own database via `--database_directory` command.
+
+### Fixed
+Codebase now complies with ruff linting
+
 ## [v1.1.1] - 2025-11-27
 
 Minor bugfix - code is now in a subfolder within src, rather than being directly under src.
@@ -14,7 +23,7 @@ None
 
 ### Fixed
 
-The src layout changes should avoid any namespace clashes - for example, previously it was possible to run `import cli` 
+The src layout changes should avoid any namespace clashes - for example, previously it was possible to run `import cli`
 which would import the taxaplease commandline interface. This would clash with any other packages that have a module named
 "cli" and was therefore not desireable. By altering the layout, the equivalent import is now `from taxaplease import cli`
 which avoids the namespace clash.

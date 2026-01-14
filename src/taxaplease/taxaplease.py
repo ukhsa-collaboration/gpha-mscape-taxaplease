@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup as bs
 
 import taxaplease.taxaplease_data as tpData
 
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 
 
 class TaxaPlease:
