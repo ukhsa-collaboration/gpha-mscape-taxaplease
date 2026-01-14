@@ -1,5 +1,6 @@
-import json
 import argparse
+import json
+
 from taxaplease.taxaplease import TaxaPlease
 from taxaplease.taxaplease import __version__ as tpVersion
 
@@ -26,7 +27,7 @@ def init_argparser():
     parser_taxid = subparsers.add_parser("taxid", help="Return a taxid")
     parser_record = subparsers.add_parser("record", help="Return a full taxon record")
     parser_check = subparsers.add_parser("check", help="Check metadata")
-    parser_version = subparsers.add_parser("version", help="Print version information")
+    # parser_version = subparsers.add_parser("version", help="Print version information")
     parser_taxonomy = subparsers.add_parser(
         "taxonomy", help="Get valid taxonomy URLs and set taxaPlease to use them"
     )
@@ -51,9 +52,7 @@ def init_argparser():
         help="Get the taxid corresponding to the superkingdom",
         metavar="<taxid>",
     )
-    group_taxid.add_argument(
-        "--parents-all", help="Get taxids for all parents", metavar="<taxid>"
-    )
+    group_taxid.add_argument("--parents-all", help="Get taxids for all parents", metavar="<taxid>")
     group_taxid.add_argument(
         "--common",
         help="Get the taxid for the closest common parent taxon between two taxids",
@@ -62,9 +61,7 @@ def init_argparser():
     )
 
     ## records
-    group_record.add_argument(
-        "--parent", help="Get the parent record", metavar="<taxid>"
-    )
+    group_record.add_argument("--parent", help="Get the parent record", metavar="<taxid>")
     group_record.add_argument(
         "--record", help="Get the record for the input taxid", metavar="<taxid>"
     )
@@ -97,12 +94,8 @@ def init_argparser():
     group_check.add_argument(
         "--is-eukaryote", help="Checks if taxid is a eukaryote", metavar="<taxid>"
     )
-    group_check.add_argument(
-        "--is-virus", help="Checks if taxid is a virus", metavar="<taxid>"
-    )
-    group_check.add_argument(
-        "--is-phage", help="Checks if taxid is a phage", metavar="<taxid>"
-    )
+    group_check.add_argument("--is-virus", help="Checks if taxid is a virus", metavar="<taxid>")
+    group_check.add_argument("--is-phage", help="Checks if taxid is a phage", metavar="<taxid>")
     group_check.add_argument(
         "--status",
         help="Checks if a taxid has been merged or removed",
@@ -116,8 +109,7 @@ def init_argparser():
 
     ## taxonomy
     group_taxonomy.add_argument(
-        "--set",
-        help="Set the URL for the taxonomy database used by taxaPlease"
+        "--set", help="Set the URL for the taxonomy database used by taxaPlease"
     )
     group_taxonomy.add_argument(
         "--get",
