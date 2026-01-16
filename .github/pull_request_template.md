@@ -1,10 +1,10 @@
 # Pull request template for mSCAPE code
 
-1. Choose the correct checklist for your pull request. This will be "Writing a new component"  
-   if your code has not yet been reviewed and is the first PR to main. If the PR is to make  
+1. Choose the correct checklist for your pull request. This will be "Writing a new component"
+   if your code has not yet been reviewed and is the first PR to main. If the PR is to make
    an update to an existing component, this will be "Updating an existing component".
 2. Complete all actions in the relevant checklist and tick off as they are completed by putting
-   an "x" inside the square brackets. 
+   an "x" inside the square brackets.
 3. Submit the completed pull request to a reviewer.
 
 ## Writing a new component
