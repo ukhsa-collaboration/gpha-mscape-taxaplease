@@ -1,13 +1,13 @@
-from taxaplease import TaxaPlease
+from taxaplease.taxaplease import TaxaPlease
 
 
 def test_root_returns_itself_as_parent():
-    taxaPlease = TaxaPlease()
+    taxaPlease = TaxaPlease(None)
     assert taxaPlease.get_parent_taxid(1) == 1
 
 
 def test_root_record_as_expected():
-    taxaPlease = TaxaPlease()
+    taxaPlease = TaxaPlease(None)
     assert taxaPlease.get_record(1) == {
         "taxid": 1,
         "name": "root",
@@ -17,22 +17,22 @@ def test_root_record_as_expected():
 
 
 def test_taxid_2000_is_streptosporangium():
-    taxaPlease = TaxaPlease()
+    taxaPlease = TaxaPlease(None)
     assert taxaPlease.get_record(2000).get("name") == "Streptosporangium"
 
 
 def test_parent_taxa():
-    taxaPlease = TaxaPlease()
+    taxaPlease = TaxaPlease(None)
     assert taxaPlease.get_parent_taxid(2004) == 85012
 
 
 def test_get_genus_taxid():
-    taxaPlease = TaxaPlease()
+    taxaPlease = TaxaPlease(None)
     assert taxaPlease.get_genus_taxid(562) == 561
 
 
 def test_common_parent_record_distant_taxa():
-    taxaPlease = TaxaPlease()
+    taxaPlease = TaxaPlease(None)
     taxid_canis_lupus = 9612
     taxid_aloe_vera = 34199
     assert (
@@ -42,7 +42,7 @@ def test_common_parent_record_distant_taxa():
 
 
 def test_common_parent_record_close_taxa():
-    taxaPlease = TaxaPlease()
+    taxaPlease = TaxaPlease(None)
     ## E. coli and a random Shigella are both Enterobacteriaceae
     taxid_e_coli = 562
     taxid_s_flexneri = 623
@@ -54,7 +54,7 @@ def test_common_parent_record_close_taxa():
 
 
 def test_levels_between_close_taxa():
-    taxaPlease = TaxaPlease()
+    taxaPlease = TaxaPlease(None)
 
     ## levels between close taxa
     taxid_e_coli = 562
@@ -68,7 +68,7 @@ def test_levels_between_close_taxa():
 
 
 def test_levels_between_distant_taxa():
-    taxaPlease = TaxaPlease()
+    taxaPlease = TaxaPlease(None)
 
     ## levels between distant taxa
     taxid_e_coli = 562
@@ -82,7 +82,7 @@ def test_levels_between_distant_taxa():
 
 
 def test_is_virus_fail():
-    taxaPlease = TaxaPlease()
+    taxaPlease = TaxaPlease(None)
 
     ## is aloe vera a virus? (no)
     taxid_aloe_vera = 34199
@@ -91,7 +91,7 @@ def test_is_virus_fail():
 
 
 def test_is_eukaryote_pass():
-    taxaPlease = TaxaPlease()
+    taxaPlease = TaxaPlease(None)
 
     taxid_aloe_vera = 34199
 
@@ -99,7 +99,7 @@ def test_is_eukaryote_pass():
 
 
 def test_is_archaea_fail():
-    taxaPlease = TaxaPlease()
+    taxaPlease = TaxaPlease(None)
 
     ## Shigella is not Archaea
     taxid_s_flexneri = 623
@@ -108,7 +108,7 @@ def test_is_archaea_fail():
 
 
 def test_is_archaea_pass():
-    taxaPlease = TaxaPlease()
+    taxaPlease = TaxaPlease(None)
 
     ## Methanobrevibacter smithii is Archaea
     taxid_random_archaea = 2173
@@ -117,7 +117,7 @@ def test_is_archaea_pass():
 
 
 def test_current_taxid():
-    taxaPlease = TaxaPlease()
+    taxaPlease = TaxaPlease(None)
 
     taxid_bacteria = 2
 
@@ -129,7 +129,7 @@ def test_current_taxid():
 
 
 def test_deleted_taxid():
-    taxaPlease = TaxaPlease()
+    taxaPlease = TaxaPlease(None)
 
     deletedTaxid = 3467805
 
@@ -141,7 +141,7 @@ def test_deleted_taxid():
 
 
 def test_merged_taxid():
-    taxaPlease = TaxaPlease()
+    taxaPlease = TaxaPlease(None)
 
     photobacteriumProfundumOld = 12
     photobacteriumProfundumNew = 74109
@@ -154,7 +154,7 @@ def test_merged_taxid():
 
 
 def test_phages():
-    taxaPlease = TaxaPlease()
+    taxaPlease = TaxaPlease(None)
 
     topLevelPhage = 2731619  ## Caudoviricetes
     subLevelPhage = 2560487  ## Bowservirus bowser
