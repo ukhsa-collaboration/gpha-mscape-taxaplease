@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-import sqlite3
-import shutil
-import requests
-import pandas as pd
 import datetime
-import os
+import shutil
+import sqlite3
 import tempfile
 from pathlib import Path
+
+import pandas as pd  # type: ignore
+import requests  # type: ignore
 
 #####################
 # Utility functions #
@@ -22,14 +22,14 @@ def download_file(url, *, destinationDir=None):
     If not specified, we use the current working directory
     """
     if not destinationDir:
-        destinationDir = os.getcwd()
+        destinationDir = Path.cwd()
 
-    local_filename = os.path.join(destinationDir, url.split("/")[-1])
+    local_filename = Path(destinationDir, url.split("/")[-1])
 
     ## NOTE the stream=True parameter below
     with requests.get(url, stream=True) as r:
         r.raise_for_status()
-        with open(local_filename, "wb") as f:
+        with Path.open(local_filename, "wb") as f:
             for chunk in r.iter_content(chunk_size=8192):
                 # If you have chunk encoded response uncomment if
                 # and set chunk_size parameter to None.
@@ -51,15 +51,11 @@ def main(
 
     ## download the data
     print(f"{datetime.datetime.now()} Downloading {ncbi_taxonomy_data_url}")
-    ncbi_taxonomy_data_compressed = download_file(
-        ncbi_taxonomy_data_url, destinationDir=tempdir
-    )
+    ncbi_taxonomy_data_compressed = download_file(ncbi_taxonomy_data_url, destinationDir=tempdir)
 
     ## extract the archive to a subfolder
     print(f"{datetime.datetime.now()} Extracting {ncbi_taxonomy_data_compressed}")
-    shutil.unpack_archive(
-        ncbi_taxonomy_data_compressed, extract_dir=os.path.join(tempdir, "new_taxdump")
-    )
+    shutil.unpack_archive(ncbi_taxonomy_data_compressed, extract_dir=Path(tempdir, "new_taxdump"))
 
     ## technically I think you could download the stream straight into
     ## the gzip extrator, but this works.
@@ -71,7 +67,7 @@ def main(
     ## get half the required info
     print(f"{datetime.datetime.now()} Processing nodes (file 1/2)")
     taxid_to_rank_df = pd.read_csv(
-        os.path.join(tempdir, "new_taxdump", "nodes.dmp"),
+        Path(tempdir, "new_taxdump", "nodes.dmp"),
         sep="|",
         quotechar="\t",
         index_col=0,
@@ -82,7 +78,7 @@ def main(
     ## get the other half
     print(f"{datetime.datetime.now()} Processing lineages (file 2/2)")
     taxid_to_name_df = pd.read_csv(
-        os.path.join(tempdir, "new_taxdump", "fullnamelineage.dmp"),
+        Path(tempdir, "new_taxdump", "fullnamelineage.dmp"),
         sep="|",
         quotechar="\t",
         index_col=0,
@@ -98,7 +94,7 @@ def main(
     ## prep the deleted ids table
     print(f"{datetime.datetime.now()} Processing deleted nodes")
     deleted_ids_df = pd.read_csv(
-        os.path.join(tempdir, "new_taxdump", "delnodes.dmp"),
+        Path(tempdir, "new_taxdump", "delnodes.dmp"),
         sep="|",
         index_col=0,
         quotechar="\t",
@@ -108,7 +104,7 @@ def main(
     ## prep the merged ids table
     print(f"{datetime.datetime.now()} Processing merged nodes")
     merged_ids_df = pd.read_csv(
-        os.path.join(tempdir, "new_taxdump", "merged.dmp"),
+        Path(tempdir, "new_taxdump", "merged.dmp"),
         sep="|",
         index_col=0,
         quotechar="\t",
@@ -121,8 +117,8 @@ def main(
 
     ## create an sqlite database
     print(f"{datetime.datetime.now()} Staging taxa.db")
-    db_dir = os.path.join(Path.home(), ".taxaplease")
-    db_path = os.path.join(db_dir, "taxa.db")
+    db_dir = Path(Path.home(), ".taxaplease")
+    db_path = Path(db_dir, "taxa.db")
     conn = sqlite3.connect(db_path)
 
     ## push the result to the database
@@ -131,24 +127,20 @@ def main(
     concat_df.to_sql("taxa", con=conn, index_label="taxid", if_exists="replace")
 
     print(f"{datetime.datetime.now()} Writing deleted_taxa table to taxa.db")
-    deleted_ids_df.to_sql(
-        "deleted_taxa", con=conn, index_label="taxid", if_exists="replace"
-    )
+    deleted_ids_df.to_sql("deleted_taxa", con=conn, index_label="taxid", if_exists="replace")
 
     print(f"{datetime.datetime.now()} Writing merged_taxa table to taxa.db")
-    merged_ids_df.to_sql(
-        "merged_taxa", con=conn, index_label="old_taxid", if_exists="replace"
-    )
+    merged_ids_df.to_sql("merged_taxa", con=conn, index_label="old_taxid", if_exists="replace")
 
     ## create a metadata table that contains
     ## the current taxdatabase URL
-    metadata_table_df = pd.DataFrame(
-        [("ncbi_taxonomy_data_url", ncbi_taxonomy_data_url)]
-    ).rename({0: "key", 1: "value"}, axis=1).set_index("key")
-
-    metadata_table_df.to_sql(
-        "metadata", con=conn, index_label="key", if_exists="replace"
+    metadata_table_df = (
+        pd.DataFrame([("ncbi_taxonomy_data_url", ncbi_taxonomy_data_url)])
+        .rename({0: "key", 1: "value"}, axis=1)
+        .set_index("key")
     )
+
+    metadata_table_df.to_sql("metadata", con=conn, index_label="key", if_exists="replace")
 
     print(f"{datetime.datetime.now()} Done in {datetime.datetime.now() - start_time}")
 

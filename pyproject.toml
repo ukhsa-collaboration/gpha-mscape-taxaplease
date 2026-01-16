@@ -11,7 +11,7 @@ dependencies = ["pandas>=2.2.2", "Requests>=2.32.3", "networkx==3.4.2", "beautif
 version = { attr = "taxaplease.taxaplease.__version__" }
 
 [project.optional-dependencies] # Dependencies for developers only - add more if required
-dev = ["ruff>=0.4.10,<0.5", "pytest", "pre-commit"] 
+dev = ["ruff>=0.4.10,<0.5", "pytest", "pre-commit"]
 
 [build-system] # Leave this section
 requires = ["setuptools"]
