@@ -27,7 +27,7 @@ def init_argparser():
     parser_taxid = subparsers.add_parser("taxid", help="Return a taxid")
     parser_record = subparsers.add_parser("record", help="Return a full taxon record")
     parser_check = subparsers.add_parser("check", help="Check metadata")
-    # parser_version = subparsers.add_parser("version", help="Print version information")
+    parser_version = subparsers.add_parser("version", help="Print version information")  # noqa: F841
     parser_taxonomy = subparsers.add_parser(
         "taxonomy", help="Get valid taxonomy URLs and set taxaPlease to use them"
     )
