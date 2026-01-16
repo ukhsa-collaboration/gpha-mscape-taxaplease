@@ -1,10 +1,32 @@
 # Changelog
 
+## [v1.1.3] - 2025-01-16
+
+Minor bugfix to resolve import issue.
+
+### Added
+
+None
+
+### Changed
+
+None
+
+### Fixed
+
+* readded lines to `src/taxaplese/__init__.py` to allow `from taxaplease import TaxaPlease` to work
+* reverted imports for `test/test_taxaplease.py` to ensure that correct calling convention is tested
+* made database argument to `TaxaPlease()` optional to ensure backwards compatiblity
 
 ## [v1.1.2] - 2026-01-14
 
-### Added Feature
+### Added
+
 Ability to supply TaxaPlease with your own database via `--database_directory` command.
+
+### Changed
+
+None
 
 ### Fixed
 Codebase now complies with ruff linting

@@ -19,7 +19,7 @@ class TaxaPlease:
     Class for wrangling NCBI taxids
     """
 
-    def __init__(self, database):
+    def __init__(self, database=None):
         self.db = database
         self.con = self._init_database_connection()
         self.column_names = self._init_column_names()
