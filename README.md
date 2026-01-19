@@ -69,7 +69,7 @@ In your home directory, in a `.taxaplease` folder. To recreate the database, you
 
 As of 09.01.2025 you can supply TaxaPlease with your own database!
 
-Just provide the path to the folder the .db file is located following the --database_directory command.
+Just provide the path to the database file using thee --database command.
 
 ```bash
 ## use a custom database

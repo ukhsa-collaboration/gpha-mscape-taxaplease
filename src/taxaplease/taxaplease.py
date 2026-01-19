@@ -1,5 +1,4 @@
 import functools
-import os
 import sqlite3
 import tempfile
 from pathlib import Path
@@ -34,18 +33,17 @@ class TaxaPlease:
             db_dir = Path(Path.home(), ".taxaplease")
             db_path = Path(db_dir, "taxa.db")
 
+            ## if the folder doesn't exist, create it
+            if not Path.is_dir(db_dir):
+                Path.mkdir(db_dir)
+
+            ## if the database doesn't exist, create it
+            if not Path.is_file(db_path):
+                self._create_database()
+
         else:
-            db_dir = os.path.normpath(self.db)
-            file = [f for f in Path.iterdir(db_dir) if f.endswith(".db")][0]
-            db_path = Path(db_dir, file)
+            db_path = Path(self.db)
 
-        ## if the folder doesn't exist, create it
-        if not Path.is_dir(db_dir):
-            Path.mkdir(db_dir)
-
-        ## if the database doesn't exist, create it
-        if not Path.is_file(db_path):
-            self._create_database()
         return sqlite3.connect(db_path)
 
     def _create_database(self, taxonomy_url=None):
