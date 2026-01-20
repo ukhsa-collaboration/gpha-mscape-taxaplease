@@ -2,9 +2,18 @@
 
 ## [v2.0.0] - 2026-01-20
 
+### Added
+
+None
+
+### Changed
+
 * removal of ability to supply taxaplease with a folder path containing a custom database using the --database_directory command
 * ability to supply taxaPlease with a custom database file using the --database command or as an argument when instantiating the class
 
+### Fixed
+
+None
 
 ## [v1.1.3] - 2026-01-16
 
