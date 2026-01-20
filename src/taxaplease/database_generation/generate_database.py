@@ -41,7 +41,9 @@ def download_file(url, *, destinationDir=None):
 
 def main(
     tempdir,
+    *,
     ncbi_taxonomy_data_url="https://ftp.ncbi.nih.gov/pub/taxonomy/new_taxdump/new_taxdump.tar.gz",
+    db_path=None
 ):
     start_time = datetime.datetime.now()
 
@@ -117,19 +119,23 @@ def main(
 
     ## create an sqlite database
     print(f"{datetime.datetime.now()} Staging taxa.db")
-    db_dir = Path(Path.home(), ".taxaplease")
-    db_path = Path(db_dir, "taxa.db")
+    if not db_path:
+        db_dir = Path(Path.home(), ".taxaplease")
+        db_path = Path(db_dir, "taxa.db")
+    else:
+        db_dir = Path(db_path).parent
+
     conn = sqlite3.connect(db_path)
 
     ## push the result to the database
     ## should overwrite the table if exists
-    print(f"{datetime.datetime.now()} Writing taxa table to taxa.db")
+    print(f"{datetime.datetime.now()} Writing taxa table to {db_path.name}")
     concat_df.to_sql("taxa", con=conn, index_label="taxid", if_exists="replace")
 
-    print(f"{datetime.datetime.now()} Writing deleted_taxa table to taxa.db")
+    print(f"{datetime.datetime.now()} Writing deleted_taxa table to {db_path.name}")
     deleted_ids_df.to_sql("deleted_taxa", con=conn, index_label="taxid", if_exists="replace")
 
-    print(f"{datetime.datetime.now()} Writing merged_taxa table to taxa.db")
+    print(f"{datetime.datetime.now()} Writing merged_taxa table to {db_path.name}")
     merged_ids_df.to_sql("merged_taxa", con=conn, index_label="old_taxid", if_exists="replace")
 
     ## create a metadata table that contains

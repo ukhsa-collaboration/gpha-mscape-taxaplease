@@ -1,5 +1,4 @@
 import functools
-import os
 import sqlite3
 import tempfile
 from pathlib import Path
@@ -11,7 +10,7 @@ from bs4 import BeautifulSoup as bs
 
 import taxaplease.taxaplease_data as tpData
 
-__version__ = "1.1.2"
+__version__ = "2.0.0"
 
 
 class TaxaPlease:
@@ -19,7 +18,7 @@ class TaxaPlease:
     Class for wrangling NCBI taxids
     """
 
-    def __init__(self, database=None):
+    def __init__(self, *, database=None):
         self.db = database
         self.con = self._init_database_connection()
         self.column_names = self._init_column_names()
@@ -27,37 +26,72 @@ class TaxaPlease:
         self.baltimore = tpData.BALTIMORE_CLASSIFICATION
         self.viral_realms = tpData.VIRAL_REALMS
 
-    def _init_database_connection(self):
-        # if there is no database argument -> default setting, if there is a database argument -> use folder & search
-        # for .db file inside
-        if self.db is None:
+    def _init_database_connection(self) -> sqlite3.Connection:
+        """
+        Initialises the sqlite database connection, creating the taxaPlease
+        database if required.
+
+        If self.db is specified, the sqlite database at that location will
+        be used, else it will be created at that location.
+
+        If self.db is unspecified, the sqlite database will be created at
+        the default location in the users home directory.
+
+        Returns
+        -------
+        sqlite3.Connection
+            sqlite connection to the taxaPlease database
+        """
+        ## define paths for the database and its
+        ## containing folder
+        if not self.db:
             db_dir = Path(Path.home(), ".taxaplease")
             db_path = Path(db_dir, "taxa.db")
-
         else:
-            db_dir = os.path.normpath(self.db)
-            file = [f for f in Path.iterdir(db_dir) if f.endswith(".db")][0]
-            db_path = Path(db_dir, file)
+            db_dir = Path(self.db).parent
+            db_path = Path(self.db)
+
+        ## check that the file path isn't actually a folder
+        if db_path.is_dir():
+            raise IsADirectoryError(
+                f"Specified taxaplease database {db_path} is a folder. Refusing to overwrite"
+            )
 
         ## if the folder doesn't exist, create it
-        if not Path.is_dir(db_dir):
-            Path.mkdir(db_dir)
+        Path.mkdir(db_dir, parents=True, exist_ok=True)
 
         ## if the database doesn't exist, create it
-        if not Path.is_file(db_path):
-            self._create_database()
+        if not db_path.is_file():
+            self._create_database(db_path=db_path)
+
         return sqlite3.connect(db_path)
 
-    def _create_database(self, taxonomy_url=None):
+    def _create_database(self, *, taxonomy_url=None, db_path=None):
+        """
+        Create the taxaPlease database, optionally using
+        a specified URL corresponding to an NCBI taxdump
+        as the source data.
+
+        Parameters
+        ----------
+        taxonomy_url: Optional[str]
+            A taxdump URL to be used as the source NCBI database
+        db_path: Optional[str]
+            Path to use for the generated sqlite database
+
+        Returns
+        -------
+        None
+        """
         import taxaplease.database_generation.generate_database as gd
 
         with tempfile.TemporaryDirectory() as tempdir:
             if taxonomy_url:
                 ## if specified, use that
-                gd.main(tempdir, taxonomy_url)
+                gd.main(tempdir, ncbi_taxonomy_data_url=taxonomy_url, db_path=db_path)
             else:
                 ## else use the latest
-                gd.main(tempdir)
+                gd.main(tempdir, db_path=db_path)
 
     def _init_column_names(self) -> list:
         """
@@ -70,7 +104,7 @@ class TaxaPlease:
         return [x[0] for x in cur.description]
 
     def set_taxonomy_url(self, url: str):
-        self._create_database(url)
+        self._create_database(taxonomy_url=url, db_path=self.db)
 
         return None
 
@@ -145,7 +179,9 @@ class TaxaPlease:
             Parent NCBI taxid or None
         """
         cur = self.con.cursor()
-        res = cur.execute("SELECT parent_taxid FROM taxa WHERE taxid = ?", [inputTaxid]).fetchone()
+        res = cur.execute(
+            "SELECT parent_taxid FROM taxa WHERE taxid = ?", [inputTaxid]
+        ).fetchone()
 
         if res:
             return res[0]
@@ -198,7 +234,9 @@ class TaxaPlease:
             return None
 
         cur = self.con.cursor()
-        res = cur.execute("SELECT * FROM taxa WHERE taxid = ?", [parent_taxid]).fetchone()
+        res = cur.execute(
+            "SELECT * FROM taxa WHERE taxid = ?", [parent_taxid]
+        ).fetchone()
 
         if res:
             return dict(zip(self.column_names, res, strict=False))
@@ -318,7 +356,9 @@ class TaxaPlease:
         ## or end up with nothing
         return self.get_superkingdom_taxid(rec["parent_taxid"])
 
-    def get_all_parent_taxids(self, inputTaxid: int | str, *, includeSelf: bool = False) -> tuple:
+    def get_all_parent_taxids(
+        self, inputTaxid: int | str, *, includeSelf: bool = False
+    ) -> tuple:
         """
         Takes in an NCBI taxid, gets all parent taxids in order of
         most specific to least specific.
@@ -449,7 +489,9 @@ class TaxaPlease:
                 return None
 
         ## do it the other way
-        right_parents = set(self.get_all_parent_taxids(inputTaxidRight, includeSelf=True))
+        right_parents = set(
+            self.get_all_parent_taxids(inputTaxidRight, includeSelf=True)
+        )
 
         tempLeftId = inputTaxidLeft
         right_levels = 0
@@ -576,7 +618,9 @@ class TaxaPlease:
             True if in the deleted table, else False
         """
         cur = self.con.cursor()
-        res = cur.execute("SELECT * FROM deleted_taxa WHERE taxid = ?", [inputTaxid]).fetchone()
+        res = cur.execute(
+            "SELECT * FROM deleted_taxa WHERE taxid = ?", [inputTaxid]
+        ).fetchone()
 
         return bool(res)
 

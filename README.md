@@ -63,15 +63,25 @@ Maybe not, but they're in there for now.
 
 ## Where is the database stored?
 
-In your home directory, in a `.taxaplease` folder. To recreate the database, you can just delete this folder.
+By default, the taxaplease database is stored in your home directory, in a `.taxaplease` folder. 
+To recreate the database, you can just delete this folder.
 
-## But I want to use my own database!?
+## But I want to use a different database location!
 
-As of 09.01.2025 you can supply TaxaPlease with your own database!
+As of v2.0.0 you can supply taxaPlease with a custom database location - just provide the path to
+the database file using the `--database` command or as an argument when instantiating the class.
 
-Just provide the path to the folder the .db file is located following the --database_directory command.
+If the file exists, this will be used as the sqlite database for taxaPlease queries - else the
+database will be created at this location.
 
 ```bash
-## use a custom database
-taxaplease --database_directory {path-to-database-folder} record --record 1337
+## use a custom database from the CLI
+taxaplease --database <path-to-database-file> record --record 1337
+```
+
+```python
+from taxaplease import TaxaPlease
+
+## specify a custom database location in Python
+tp = TaxaPlease(database="mydir/custom.db")
 ```
