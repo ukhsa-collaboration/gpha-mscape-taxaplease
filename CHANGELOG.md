@@ -1,5 +1,51 @@
 # Changelog
 
+## [v2.0.0] - 2026-01-20
+
+### Added
+
+None
+
+### Changed
+
+* removal of ability to supply taxaplease with a folder path containing a custom database using the --database_directory command
+* ability to supply taxaPlease with a custom database file using the --database command or as an argument when instantiating the class
+
+### Fixed
+
+None
+
+## [v1.1.3] - 2026-01-16
+
+Minor bugfix to resolve import issue.
+
+### Added
+
+None
+
+### Changed
+
+None
+
+### Fixed
+
+* readded lines to `src/taxaplese/__init__.py` to allow `from taxaplease import TaxaPlease` to work
+* reverted imports for `test/test_taxaplease.py` to ensure that correct calling convention is tested
+* made database argument to `TaxaPlease()` optional to ensure backwards compatiblity
+
+## [v1.1.2] - 2026-01-14
+
+### Added
+
+Ability to supply TaxaPlease with your own database via `--database_directory`command.
+
+### Changed
+
+None
+
+### Fixed
+Codebase now complies with ruff linting
+
 ## [v1.1.1] - 2025-11-27
 
 Minor bugfix - code is now in a subfolder within src, rather than being directly under src.
@@ -14,7 +60,7 @@ None
 
 ### Fixed
 
-The src layout changes should avoid any namespace clashes - for example, previously it was possible to run `import cli` 
+The src layout changes should avoid any namespace clashes - for example, previously it was possible to run `import cli`
 which would import the taxaplease commandline interface. This would clash with any other packages that have a module named
 "cli" and was therefore not desireable. By altering the layout, the equivalent import is now `from taxaplease import cli`
 which avoids the namespace clash.

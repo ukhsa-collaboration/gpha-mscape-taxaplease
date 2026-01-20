@@ -1,18 +1,16 @@
-import os
-import requests
+import functools
 import sqlite3
 import tempfile
-import functools
-import networkx as nx
-import taxaplease.taxaplease_data as tpData
-from typing import Optional
 from pathlib import Path
-from bs4 import BeautifulSoup as bs
 from urllib.parse import urljoin
-import glob
 
+import networkx as nx
+import requests
+from bs4 import BeautifulSoup as bs
 
-__version__ = "1.1.1"
+import taxaplease.taxaplease_data as tpData
+
+__version__ = "2.0.0"
 
 
 class TaxaPlease:
@@ -20,7 +18,7 @@ class TaxaPlease:
     Class for wrangling NCBI taxids
     """
 
-    def __init__(self, database):
+    def __init__(self, *, database=None):
         self.db = database
         self.con = self._init_database_connection()
         self.column_names = self._init_column_names()
@@ -28,36 +26,72 @@ class TaxaPlease:
         self.baltimore = tpData.BALTIMORE_CLASSIFICATION
         self.viral_realms = tpData.VIRAL_REALMS
 
-    def _init_database_connection(self):
-        # if there is no database argument -> default setting, if there is a database argument -> use folder & search
-        # for .db file inside
-        if self.db is None:
-            db_dir = os.path.join(Path.home(), ".taxaplease")
-            db_path = os.path.join(db_dir, "taxa.db")
+    def _init_database_connection(self) -> sqlite3.Connection:
+        """
+        Initialises the sqlite database connection, creating the taxaPlease
+        database if required.
+
+        If self.db is specified, the sqlite database at that location will
+        be used, else it will be created at that location.
+
+        If self.db is unspecified, the sqlite database will be created at
+        the default location in the users home directory.
+
+        Returns
+        -------
+        sqlite3.Connection
+            sqlite connection to the taxaPlease database
+        """
+        ## define paths for the database and its
+        ## containing folder
+        if not self.db:
+            db_dir = Path(Path.home(), ".taxaplease")
+            db_path = Path(db_dir, "taxa.db")
         else:
-            db_dir =  os.path.normpath(self.db)
-            file = [f for f in os.listdir(db_dir) if f.endswith('.db')][0]
-            db_path = os.path.join(db_dir, file)
+            db_dir = Path(self.db).parent
+            db_path = Path(self.db)
+
+        ## check that the file path isn't actually a folder
+        if db_path.is_dir():
+            raise IsADirectoryError(
+                f"Specified taxaplease database {db_path} is a folder. Refusing to overwrite"
+            )
 
         ## if the folder doesn't exist, create it
-        if not os.path.isdir(db_dir):
-            os.mkdir(db_dir)
+        Path.mkdir(db_dir, parents=True, exist_ok=True)
 
         ## if the database doesn't exist, create it
-        if not os.path.isfile(db_path):
-            self._create_database()
+        if not db_path.is_file():
+            self._create_database(db_path=db_path)
+
         return sqlite3.connect(db_path)
 
-    def _create_database(self, taxonomy_url=None):
+    def _create_database(self, *, taxonomy_url=None, db_path=None):
+        """
+        Create the taxaPlease database, optionally using
+        a specified URL corresponding to an NCBI taxdump
+        as the source data.
+
+        Parameters
+        ----------
+        taxonomy_url: Optional[str]
+            A taxdump URL to be used as the source NCBI database
+        db_path: Optional[str]
+            Path to use for the generated sqlite database
+
+        Returns
+        -------
+        None
+        """
         import taxaplease.database_generation.generate_database as gd
 
         with tempfile.TemporaryDirectory() as tempdir:
             if taxonomy_url:
                 ## if specified, use that
-                gd.main(tempdir, taxonomy_url)
+                gd.main(tempdir, ncbi_taxonomy_data_url=taxonomy_url, db_path=db_path)
             else:
                 ## else use the latest
-                gd.main(tempdir)
+                gd.main(tempdir, db_path=db_path)
 
     def _init_column_names(self) -> list:
         """
@@ -67,10 +101,10 @@ class TaxaPlease:
         """
         cur = self.con.cursor()
         cur.execute("SELECT * FROM taxa LIMIT 0")
-        return list(map(lambda x: x[0], cur.description))
+        return [x[0] for x in cur.description]
 
     def set_taxonomy_url(self, url: str):
-        self._create_database(url)
+        self._create_database(taxonomy_url=url, db_path=self.db)
 
         return None
 
@@ -94,13 +128,11 @@ class TaxaPlease:
         relative_url_list = list(
             filter(
                 lambda x: x.endswith(".zip") or x.endswith(".tar.gz"),
-                map(lambda x: x.get("href"), file_listing),
+                (x.get("href") for x in file_listing),
             )
         )
 
-        absolute_url_list = [
-            urljoin(url, os.path.basename(x)) for x in relative_url_list
-        ]
+        absolute_url_list = [urljoin(url, Path.name(x)) for x in relative_url_list]
 
         return absolute_url_list
 
@@ -131,7 +163,7 @@ class TaxaPlease:
 
         return available_taxdump_files
 
-    def get_parent_taxid(self, inputTaxid: int | str) -> Optional[int]:
+    def get_parent_taxid(self, inputTaxid: int | str) -> int | None:
         """
         Takes in an NCBI taxid, returns the corresponding parent
         taxid if there is one, or None
@@ -156,7 +188,7 @@ class TaxaPlease:
         else:
             return None
 
-    def get_record(self, inputTaxid: int | str) -> Optional[dict]:
+    def get_record(self, inputTaxid: int | str) -> dict | None:
         """
         Takes in an NCBI taxid, returns the corresponding record
         from the taxa database if there is one, or None
@@ -175,11 +207,11 @@ class TaxaPlease:
         res = cur.execute("SELECT * FROM taxa WHERE taxid = ?", [inputTaxid]).fetchone()
 
         if res:
-            return dict(zip(self.column_names, res))
+            return dict(zip(self.column_names, res, strict=False))
         else:
             return None
 
-    def get_parent_record(self, inputTaxid: int | str) -> Optional[dict]:
+    def get_parent_record(self, inputTaxid: int | str) -> dict | None:
         """
         Takes in an NCBI taxid, gets the parent taxid if there is one,
         then gets its corresponding record.
@@ -207,11 +239,11 @@ class TaxaPlease:
         ).fetchone()
 
         if res:
-            return dict(zip(self.column_names, res))
+            return dict(zip(self.column_names, res, strict=False))
         else:
             return None
 
-    def get_genus_taxid(self, inputTaxid: int | str) -> Optional[int]:
+    def get_genus_taxid(self, inputTaxid: int | str) -> int | None:
         """
         Kinda naff function that only works if your inputTaxid is
         at or below genus level (naturally!).
@@ -249,8 +281,8 @@ class TaxaPlease:
         ## or end up with nothing
         return self.get_genus_taxid(rec["parent_taxid"])
 
-    @functools.cache
-    def get_species_taxid(self, inputTaxid: int | str) -> Optional[int | str]:
+    @functools.cache  # noqa: B019
+    def get_species_taxid(self, inputTaxid: int | str) -> int | str | None:
         """
         Kinda naff function that only works if your inputTaxid is
         at or below species level - for example, if you have a strain
@@ -292,7 +324,7 @@ class TaxaPlease:
         ## or end up with nothing
         return self.get_species_taxid(rec["parent_taxid"])
 
-    def get_superkingdom_taxid(self, inputTaxid: int | str) -> Optional[int]:
+    def get_superkingdom_taxid(self, inputTaxid: int | str) -> int | None:
         """
         Takes in an NCBI taxid, traverses up the tree until we find
         something labelled superkingdom, or hit a brick wall.
@@ -364,7 +396,7 @@ class TaxaPlease:
 
     def get_common_parent_taxid(
         self, inputTaxidLeft: int | str, inputTaxidRight: int | str
-    ) -> Optional[int | str]:
+    ) -> int | str | None:
         """
         Takes two NCBI taxids as input, traverses up the taxonomic
         tree to find the first parent taxid that both share.
@@ -397,7 +429,7 @@ class TaxaPlease:
 
     def get_common_parent_record(
         self, inputTaxidLeft: int | str, inputTaxidRight: int | str
-    ) -> Optional[dict]:
+    ) -> dict | None:
         """
         Takes two NCBI taxids as input, traverses up the taxonomic
         tree to find the first parent taxid record that both share.
@@ -423,7 +455,7 @@ class TaxaPlease:
 
     def get_number_of_levels_between_taxa(
         self, inputTaxidLeft: int | str, inputTaxidRight: int | str
-    ) -> Optional[dict]:
+    ) -> dict | None:
         """
         Takes two NCBI taxids as input, finds the common parent taxa
         and gets the number of levels from each input taxid to that
@@ -565,7 +597,7 @@ class TaxaPlease:
         ## check the parents
         parents = set(self.get_all_parent_taxids(inputTaxid, includeSelf=True))
         ## get all the phage taxids
-        phages = set(list(self.phages.keys()))
+        phages = set(self.phages.keys())
         ## check if the sets have any items in common
         intersection = phages.intersection(parents)
 
@@ -664,7 +696,7 @@ class TaxaPlease:
                 *[self.get_record(x) for x in self.get_all_parent_taxids(inputTaxid)],
             ][::-1]
             ## add edges to graph
-            for rec, next_rec in zip(parents, parents[1:]):
+            for rec, next_rec in zip(parents, parents[1:], strict=False):
                 graph.add_node(rec["name"])
                 graph.add_edge(rec["name"], next_rec["name"])
 
@@ -701,8 +733,8 @@ class TaxaPlease:
         ## by returning -1, which we will
         ## detect in the CLI
         return -1
-    
-    def get_baltimore_classification(self, inputTaxid: int | str) -> Optional[str]:
+
+    def get_baltimore_classification(self, inputTaxid: int | str) -> str | None:
         """
         Takes in a taxid
 
@@ -727,7 +759,7 @@ class TaxaPlease:
         """
         if not self.isVirus(inputTaxid):
             return None
-        
+
         parents = set(self.get_all_parent_taxids(inputTaxid, includeSelf=True))
         baltimore_keys = set(self.baltimore)
 
