@@ -52,7 +52,7 @@ class TaxaPlease:
             db_path = Path(self.db)
 
         ## check that the file path isn't actually a folder
-        if db_path.isdir():
+        if db_path.is_dir():
             raise IsADirectoryError(
                 f"Specified taxaplease database {db_path} is a folder. Refusing to overwrite"
             )
@@ -61,7 +61,7 @@ class TaxaPlease:
         Path.mkdir(db_dir, parents=True, exist_ok=True)
 
         ## if the database doesn't exist, create it
-        if not db_path.isfile():
+        if not db_path.is_file():
             self._create_database()
 
         return sqlite3.connect(db_path)

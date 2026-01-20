@@ -68,13 +68,20 @@ To recreate the database, you can just delete this folder.
 
 ## But I want to use a different database location!
 
-As of v1.1.2 you can supply taxaPlease with a custom database location - just provide the path to
+As of v2.0.0 you can supply taxaPlease with a custom database location - just provide the path to
 the database file using the `--database` command or as an argument when instantiating the class.
 
 If the file exists, this will be used as the sqlite database for taxaPlease queries - else the
 database will be created at this location.
 
 ```bash
-## use a custom database
+## use a custom database from the CLI
 taxaplease --database <path-to-database-file> record --record 1337
+```
+
+```python
+from taxaplease import TaxaPlease
+
+## specify a custom database location in Python
+tp = TaxaPlease(database="mydir/custom.db")
 ```

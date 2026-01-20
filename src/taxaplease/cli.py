@@ -183,7 +183,7 @@ def handle_taxonomy_request(args, taxapleaseObj):
 def main():
     args = init_argparser().parse_args()
 
-    tp = TaxaPlease(args.database)
+    tp = TaxaPlease(database=args.database)
 
     result = None
 
