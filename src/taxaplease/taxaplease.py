@@ -62,11 +62,11 @@ class TaxaPlease:
 
         ## if the database doesn't exist, create it
         if not db_path.is_file():
-            self._create_database()
+            self._create_database(db_path=db_path)
 
         return sqlite3.connect(db_path)
 
-    def _create_database(self, taxonomy_url=None):
+    def _create_database(self, *, taxonomy_url=None, db_path=None):
         """
         Create the taxaPlease database, optionally using
         a specified URL corresponding to an NCBI taxdump
@@ -76,6 +76,8 @@ class TaxaPlease:
         ----------
         taxonomy_url: Optional[str]
             A taxdump URL to be used as the source NCBI database
+        db_path: Optional[str]
+            Path to use for the generated sqlite database
 
         Returns
         -------
@@ -86,10 +88,10 @@ class TaxaPlease:
         with tempfile.TemporaryDirectory() as tempdir:
             if taxonomy_url:
                 ## if specified, use that
-                gd.main(tempdir, taxonomy_url)
+                gd.main(tempdir, ncbi_taxonomy_data_url=taxonomy_url, db_path=db_path)
             else:
                 ## else use the latest
-                gd.main(tempdir)
+                gd.main(tempdir, db_path=db_path)
 
     def _init_column_names(self) -> list:
         """
@@ -102,7 +104,7 @@ class TaxaPlease:
         return [x[0] for x in cur.description]
 
     def set_taxonomy_url(self, url: str):
-        self._create_database(url)
+        self._create_database(taxonomy_url=url, db_path=self.db)
 
         return None
 
