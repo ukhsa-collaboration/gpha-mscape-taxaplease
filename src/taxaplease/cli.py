@@ -19,7 +19,7 @@ def init_argparser():
         type=str,
         required=False,
         default=None,
-        help="set path to custom database file",
+        help="Specify path to taxaPlease sqlite database file",
     )
 
     ## subparsers are mutually exclusive by default
@@ -183,7 +183,7 @@ def handle_taxonomy_request(args, taxapleaseObj):
 def main():
     args = init_argparser().parse_args()
 
-    tp = TaxaPlease(args.database)
+    tp = TaxaPlease(database=args.database)
 
     result = None
 
