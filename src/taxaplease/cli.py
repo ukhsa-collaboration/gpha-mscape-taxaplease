@@ -19,7 +19,7 @@ def init_argparser():
         type=str,
         required=False,
         default=None,
-        help="set path to custom database file",
+        help="Specify path to taxaPlease sqlite database file",
     )
 
     ## subparsers are mutually exclusive by default
