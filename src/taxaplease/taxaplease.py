@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup as bs
 
 import taxaplease.taxaplease_data as tpData
 
-__version__ = "2.0.0"
+__version__ = "2.1.0"
 
 
 class TaxaPlease:
@@ -132,7 +132,7 @@ class TaxaPlease:
             )
         )
 
-        absolute_url_list = [urljoin(url, Path.name(x)) for x in relative_url_list]
+        absolute_url_list = [urljoin(url, Path(x).name) for x in relative_url_list]
 
         return absolute_url_list
 
@@ -677,7 +677,7 @@ class TaxaPlease:
 
         Parameters
         ----------
-        *args
+        args
 
         Returns
         -------
@@ -713,7 +713,7 @@ class TaxaPlease:
 
         Parameters
         ----------
-        *args int or str
+        args int or str
             NCBI taxid
 
         Returns

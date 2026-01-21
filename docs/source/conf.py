@@ -9,7 +9,7 @@
 project = "taxaPlease"
 copyright = "2026, UK Health Security Agency"
 author = "UK Health Security Agency"
-release = "1.1.1"
+release = "2.1.0"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -31,5 +31,6 @@ html_static_path = ["_static"]
 # hide the sidebar from pages where it is useless
 html_sidebars = {
     "introduction": [],
-    "getting_started": []
+    "getting_started": [],
+    "user_guide": []
 }

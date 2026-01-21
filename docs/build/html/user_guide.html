@@ -1,0 +1,952 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>User guide &#8212; taxaPlease 2.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=20623aea"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API reference" href="api.html" />
+    <link rel="prev" title="Getting started" href="getting_started.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">taxaPlease 2.1.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="introduction.html">
+    Introduction
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="introduction.html">
+    Introduction
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">User guide</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="user-guide">
+<h1>User guide<a class="headerlink" href="#user-guide" title="Link to this heading">#</a></h1>
+<section id="customising-your-installation">
+<h2>Customising your installation<a class="headerlink" href="#customising-your-installation" title="Link to this heading">#</a></h2>
+<p>TaxaPlease has some sane defaults, but if you need to customise it this section documents
+some of the options available for doing this.</p>
+<section id="using-a-different-version-of-the-ncbi-taxonomy-database">
+<h3>Using a different version of the NCBI taxonomy database<a class="headerlink" href="#using-a-different-version-of-the-ncbi-taxonomy-database" title="Link to this heading">#</a></h3>
+<p>By default, on first run taxaPlease retrieves the latest version of the NCBI taxonomy.</p>
+<p>If you wish to use a specific version, you can pass the URL for this to taxaPlease, which
+will rebuild the database with that version.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you find yourself changing versions often, you might want to store multiple taxaPlease
+databases in different locations - this will save you from hammering the NCBI server
+with a lot of traffic!</p>
+<p>See <strong>Storing the taxaPlease sqlite database in a different location</strong> for how to do this.</p>
+</div>
+<p>To get valid URLs you can either visit the <a class="reference external" href="&quot;https://ftp.ncbi.nih.gov/pub/taxonomy/taxdump_archive/&quot;">NCBI taxdump archive page</a>
+or the <a class="reference external" href="&quot;https://ftp.ncbi.nih.gov/pub/taxonomy/new_taxdump/&quot;">NCBI taxdump latest page</a> or run <code class="docutils literal notranslate"><span class="pre">taxaplease</span> <span class="pre">taxonomy</span> <span class="pre">--get</span></code> which returns
+a json result of the latest URL, and older “archive” URLs.</p>
+<p>Once you have the URL of interest, you can set the database to use this either from the CLI or from
+Python.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Setting the taxonomy URL from the CLI</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">## use the 2019-01-01 version of the taxonomy</span>
+<span class="n">taxaplease</span> <span class="n">taxonomy</span> <span class="o">--</span><span class="nb">set</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">ftp</span><span class="o">.</span><span class="n">ncbi</span><span class="o">.</span><span class="n">nih</span><span class="o">.</span><span class="n">gov</span><span class="o">/</span><span class="n">pub</span><span class="o">/</span><span class="n">taxonomy</span><span class="o">/</span><span class="n">taxdump_archive</span><span class="o">/</span><span class="n">new_taxdump_2019</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mf">01.</span><span class="n">zip</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Setting the taxonomy URL from Python</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
+
+<span class="n">tp</span> <span class="o">=</span> <span class="n">TaxaPlease</span><span class="p">()</span>
+
+<span class="c1">## use the 2019-01-01 version of the taxonomy</span>
+<span class="n">tp</span><span class="o">.</span><span class="n">set_taxonomy_url</span><span class="p">(</span><span class="s2">&quot;https://ftp.ncbi.nih.gov/pub/taxonomy/taxdump_archive/new_taxdump_2019-01-01.zip&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>This should only be run when changing the taxonomy - there is no need to run it more often than this.</p>
+</section>
+<section id="storing-the-taxaplease-sqlite-database-in-a-different-location">
+<h3>Storing the taxaPlease sqlite database in a different location<a class="headerlink" href="#storing-the-taxaplease-sqlite-database-in-a-different-location" title="Link to this heading">#</a></h3>
+<p>By default, the taxaPlease database is stored in your home directory - <code class="docutils literal notranslate"><span class="pre">~/.taxaplease/taxa.db</span></code>.</p>
+<p>If you wish to store it elsewhere, or to have multiple databases (perhaps built with different versions
+of the NCBI taxonomy) you can specify a path to the database when using the CLI or Python.</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Using a custom database location from the CLI</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">## use a custom database from the CLI</span>
+<span class="n">taxaplease</span> <span class="o">--</span><span class="n">database</span> <span class="n">mydir</span><span class="o">/</span><span class="n">custom</span><span class="o">.</span><span class="n">db</span> <span class="n">record</span> <span class="o">--</span><span class="n">record</span> <span class="mi">1337</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Using a custom database location in Python</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
+
+<span class="c1">## specify a custom database location in Python</span>
+<span class="n">tp</span> <span class="o">=</span> <span class="n">TaxaPlease</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="s2">&quot;mydir/custom.db&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="reusable-patterns">
+<h2>Reusable patterns<a class="headerlink" href="#reusable-patterns" title="Link to this heading">#</a></h2>
+<p>This section documents some reusable patterns that might fit in your code.</p>
+<section id="getting-all-the-parent-records-for-a-taxid">
+<h3>Getting all the parent records for a taxid<a class="headerlink" href="#getting-all-the-parent-records-for-a-taxid" title="Link to this heading">#</a></h3>
+<p>TaxaPlease has a method for getting a record given a taxid, and for getting parent taxids
+given a taxid. There is no method for getting all parent records, however.</p>
+<p>You can do this with a pattern like this:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Getting all parent records</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
+
+<span class="n">tp</span> <span class="o">=</span> <span class="n">TaxaPlease</span><span class="p">()</span>
+<span class="n">taxid_of_interest</span> <span class="o">=</span> <span class="mi">1337</span>
+
+<span class="n">list_of_records</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">tp</span><span class="o">.</span><span class="n">get_record</span><span class="p">(</span><span class="n">taxid</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">taxid</span> <span class="ow">in</span>
+    <span class="n">tp</span><span class="o">.</span><span class="n">get_all_parent_taxids</span><span class="p">(</span><span class="n">taxid_of_interest</span><span class="p">,</span> <span class="n">includeSelf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">includeSelf=True</span></code> is an optional flag that will include taxid 1337 along with its
+parent taxids.</p>
+</section>
+<section id="initialisation-for-single-process-and-multiprocess-scripts">
+<h3>Initialisation for single process and multiprocess scripts<a class="headerlink" href="#initialisation-for-single-process-and-multiprocess-scripts" title="Link to this heading">#</a></h3>
+<p>The basic method for initialising taxaPlease is by “instantiating an instance of the class”.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
+
+<span class="n">tp</span> <span class="o">=</span> <span class="n">TaxaPlease</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>With this, a taxaPlease object has been created and assigned to the variable <code class="docutils literal notranslate"><span class="pre">tp</span></code>.</p>
+<p>If you wanted to loop through a set of IDs, it might be tempting to do something like this:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Don’t do this</span><a class="headerlink" href="#id6" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
+
+<span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="mi">68</span><span class="p">,</span> <span class="mi">419</span><span class="p">,</span> <span class="mi">665</span><span class="p">,</span> <span class="mi">1336</span><span class="p">,</span> <span class="mi">8007</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+    <span class="n">tp</span> <span class="o">=</span> <span class="n">TaxaPlease</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">tp</span><span class="o">.</span><span class="n">get_record</span><span class="p">(</span><span class="nb">id</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>However, this approach would keep reinitialising taxaPlease on each loop. It’s more efficient to
+initialise the class outside the loop so the object can be reused:</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Do this!</span><a class="headerlink" href="#id7" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
+
+<span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="mi">68</span><span class="p">,</span> <span class="mi">419</span><span class="p">,</span> <span class="mi">665</span><span class="p">,</span> <span class="mi">1336</span><span class="p">,</span> <span class="mi">8007</span><span class="p">]</span>
+<span class="n">tp</span> <span class="o">=</span> <span class="n">TaxaPlease</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">tp</span><span class="o">.</span><span class="n">get_record</span><span class="p">(</span><span class="nb">id</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>There is an exception to this - multiprocessing. TaxaPlease runs an sqlite3 database behind the scenes
+which does support being accessed from multiple processes, but individual cursor objects do not. In this
+case, it is best to have a taxaPlease instance <em>per process</em> in order to avoid any concurrency issues.</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Multiprocessing example, only do this if you have to…</span><a class="headerlink" href="#id8" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
+
+<span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="mi">68</span><span class="p">,</span> <span class="mi">419</span><span class="p">,</span> <span class="mi">665</span><span class="p">,</span> <span class="mi">1336</span><span class="p">,</span> <span class="mi">8007</span><span class="p">]</span>
+<span class="n">number_of_processes</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">input_queue</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+<span class="n">output_queue</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+<span class="n">result_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1">## load ids into the queue</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+    <span class="n">input_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">process_input_queue</span><span class="p">(</span><span class="n">source_queue</span><span class="p">,</span> <span class="n">target_queue</span><span class="p">):</span>
+    <span class="c1">## initialise a taxaplease instance</span>
+    <span class="c1">## for this process</span>
+    <span class="n">tp</span> <span class="o">=</span> <span class="n">TaxaPlease</span><span class="p">()</span>
+
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">source_queue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+        <span class="c1">## get a message from the queue</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">source_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+        <span class="c1">## process the message</span>
+        <span class="n">rec</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">get_record</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1">## push the result</span>
+        <span class="n">target_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
+
+<span class="c1">## list containing process objects</span>
+<span class="n">process_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1">## create processes and add to list</span>
+<span class="c1">## making either the defined number of processes,</span>
+<span class="c1">## or one per item in the queue, whichever is smaller</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">number_of_processes</span><span class="p">,</span> <span class="n">input_queue</span><span class="o">.</span><span class="n">qsize</span><span class="p">())):</span>
+    <span class="n">process_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="n">mp</span><span class="o">.</span><span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">process_input_queue</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">input_queue</span><span class="p">,</span> <span class="n">output_queue</span><span class="p">])</span>
+    <span class="p">)</span>
+
+<span class="c1">## start the processes</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">process_list</span><span class="p">:</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="c1">## collect all the processes once they are done</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">process_list</span><span class="p">:</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+<span class="c1">## get and print the results</span>
+<span class="k">while</span> <span class="ow">not</span> <span class="n">output_queue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+    <span class="n">result_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output_queue</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">result_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The above is a toy example that spins up 5 processes, each with a taxaPlease instance which
+is then used to process incoming data from a queue. You probably won’t need to write code to
+multiprocess in this way, but you can!</p>
+</section>
+<section id="efficiently-running-lots-of-queries">
+<h3>Efficiently running lots of queries<a class="headerlink" href="#efficiently-running-lots-of-queries" title="Link to this heading">#</a></h3>
+<p>With a typical database (such as postgres), you can achieve better performance by writing a
+big query that generates the results you need instead of sending many small queries. However,
+sqlite3 does not suffer from the network latency seen in such databases, and as such it is
+actually reasonably efficient to send many small queries.</p>
+<p>That said, if you have a list with duplicate taxids, you can save a bit of compute by using
+one of two key patterns: deduplication and dictionary lookup or sorting and memoisation.</p>
+<section id="deduplication-and-dictionary-lookup">
+<h4>Deduplication and dictionary lookup<a class="headerlink" href="#deduplication-and-dictionary-lookup" title="Link to this heading">#</a></h4>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Deduplication and dictionary lookup</span><a class="headerlink" href="#id9" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
+
+<span class="n">tp</span> <span class="o">=</span> <span class="n">TaxaPlease</span><span class="p">()</span>
+
+<span class="c1">## list of ids that contains several duplicates</span>
+<span class="n">ids</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="mi">68</span><span class="p">,</span> <span class="mi">419</span><span class="p">,</span> <span class="mi">665</span><span class="p">,</span> <span class="mi">1336</span><span class="p">,</span> <span class="mi">8007</span><span class="p">,</span>
+    <span class="mi">68</span><span class="p">,</span> <span class="mi">419</span><span class="p">,</span> <span class="mi">665</span><span class="p">,</span> <span class="mi">1336</span><span class="p">,</span> <span class="mi">8007</span><span class="p">,</span>
+    <span class="mi">68</span><span class="p">,</span> <span class="mi">419</span><span class="p">,</span> <span class="mi">665</span><span class="p">,</span> <span class="mi">1336</span><span class="p">,</span> <span class="mi">8007</span><span class="p">,</span>
+    <span class="mi">68</span><span class="p">,</span> <span class="mi">419</span><span class="p">,</span> <span class="mi">665</span><span class="p">,</span> <span class="mi">1336</span><span class="p">,</span> <span class="mi">8007</span><span class="p">,</span>
+    <span class="mi">68</span><span class="p">,</span> <span class="mi">419</span><span class="p">,</span> <span class="mi">665</span><span class="p">,</span> <span class="mi">1336</span><span class="p">,</span> <span class="mi">8007</span>
+<span class="p">]</span>
+
+<span class="c1">## sets are an efficient way to ensure</span>
+<span class="c1">## only unique values are present</span>
+<span class="n">ids_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+
+<span class="c1">## use a comprehension to generate a lookup</span>
+<span class="c1">## dictionary from id to record</span>
+<span class="n">lookup_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">taxid</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">get_record</span><span class="p">(</span><span class="n">taxid</span><span class="p">)</span> <span class="k">for</span> <span class="n">taxid</span> <span class="ow">in</span> <span class="n">ids_set</span><span class="p">}</span>
+
+<span class="c1">## create a new list of records in the same order</span>
+<span class="c1">## as the original, including duplicate records</span>
+<span class="n">records_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">lookup_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="sorting-and-memoisation">
+<h4>Sorting and memoisation<a class="headerlink" href="#sorting-and-memoisation" title="Link to this heading">#</a></h4>
+<p>Memoisation is a technique that caches the result of a function, so if it is called with
+the same arguments again the previous result can be retrieved instead of calculating it
+again using a potentially exspensive bit of code such as a database lookup.</p>
+<p>If the order of results is not important, sorting will improve cache hits but this is optional.</p>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Sorting and memoisation</span><a class="headerlink" href="#id10" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
+
+<span class="n">tp</span> <span class="o">=</span> <span class="n">TaxaPlease</span><span class="p">()</span>
+
+<span class="c1">## list of ids that contains several duplicates</span>
+<span class="n">ids</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="mi">68</span><span class="p">,</span> <span class="mi">419</span><span class="p">,</span> <span class="mi">665</span><span class="p">,</span> <span class="mi">1336</span><span class="p">,</span> <span class="mi">8007</span><span class="p">,</span>
+    <span class="mi">68</span><span class="p">,</span> <span class="mi">419</span><span class="p">,</span> <span class="mi">665</span><span class="p">,</span> <span class="mi">1336</span><span class="p">,</span> <span class="mi">8007</span><span class="p">,</span>
+    <span class="mi">68</span><span class="p">,</span> <span class="mi">419</span><span class="p">,</span> <span class="mi">665</span><span class="p">,</span> <span class="mi">1336</span><span class="p">,</span> <span class="mi">8007</span><span class="p">,</span>
+    <span class="mi">68</span><span class="p">,</span> <span class="mi">419</span><span class="p">,</span> <span class="mi">665</span><span class="p">,</span> <span class="mi">1336</span><span class="p">,</span> <span class="mi">8007</span><span class="p">,</span>
+    <span class="mi">68</span><span class="p">,</span> <span class="mi">419</span><span class="p">,</span> <span class="mi">665</span><span class="p">,</span> <span class="mi">1336</span><span class="p">,</span> <span class="mi">8007</span>
+<span class="p">]</span>
+
+<span class="c1">## use the functools.cache decorator</span>
+<span class="c1">## to do memoisation of expensive results</span>
+<span class="nd">@functools</span><span class="o">.</span><span class="n">cache</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_record_helper</span><span class="p">(</span><span class="n">input_taxid</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tp</span><span class="o">.</span><span class="n">get_record</span><span class="p">(</span><span class="n">input_taxid</span><span class="p">)</span>
+
+<span class="c1">## sort the list to improve cache hits</span>
+<span class="n">sorted_ids</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+
+<span class="c1">## generate the records list</span>
+<span class="n">records_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_record_helper</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sorted_ids</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="quirky-bits">
+<h2>Quirky bits<a class="headerlink" href="#quirky-bits" title="Link to this heading">#</a></h2>
+<p>This section documents <em>ad hoc</em> features of taxaPlease that might be useful for random
+queries and one-off investigations.</p>
+<section id="reverse-lookup">
+<h3>Reverse lookup<a class="headerlink" href="#reverse-lookup" title="Link to this heading">#</a></h3>
+<p>TaxaPlease is designed to go from an NCBI taxid (for example, 1337) to a taxon (for example, <em>Streptococcus hyointestinalis</em>).
+The reverse, starting with a taxon and finding the corresponding taxid is deliberately not supported as it delves into the
+vagaries of fuzzy string matching, changing taxon names and many to one relationships. Other tools are available that attempt
+to tackle this problem!</p>
+<p>If you insist; however, there is a way to do this by using the taxaPlease database directly.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is not a supported feature of taxaPlease, and the database structure is potentially
+subject to change, which may break any code depending on “reverse lookup”.</p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">Querying the taxaPlease sqlite database directly</span><a class="headerlink" href="#id11" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1">## connect to database</span>
+<span class="n">db_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">(),</span> <span class="s2">&quot;.taxaplease&quot;</span><span class="p">)</span>
+<span class="n">db_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">db_dir</span><span class="p">,</span> <span class="s2">&quot;taxa.db&quot;</span><span class="p">)</span>
+
+<span class="n">db_conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">db_path</span><span class="p">)</span>
+
+<span class="c1">## get top 5 rows from taxa table</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;select * from taxa limit 5&quot;</span><span class="p">,</span> <span class="n">db_conn</span><span class="p">)</span>
+
+<span class="c1">## get a taxa by name</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SELECT</span>
+<span class="sd">        *</span>
+<span class="sd">    FROM</span>
+<span class="sd">        taxa</span>
+<span class="sd">    WHERE</span>
+<span class="sd">        name LIKE &#39;Pseudomonas aeruginosa&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="n">db_conn</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="generating-a-graph">
+<h3>Generating a graph<a class="headerlink" href="#generating-a-graph" title="Link to this heading">#</a></h3>
+<p>Let’s say you have a set of taxids and you want to know how many levels there
+are between them. You can run a query like this:</p>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">Getting levels between a set of taxids</span><a class="headerlink" href="#id12" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">taxaplease</span> <span class="n">check</span> <span class="o">--</span><span class="n">levels</span><span class="o">-</span><span class="n">between</span> <span class="mi">1337</span> <span class="mi">42</span>
+
+<span class="p">{</span><span class="s2">&quot;left_levels_to_common_parent&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;right_levels_to_common_parent&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;total_levels_between_taxa&quot;</span><span class="p">:</span> <span class="mi">14</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>If you want to visualise that, you can use the <code class="docutils literal notranslate"><span class="pre">--graph</span></code> option:</p>
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption"><span class="caption-text">Using –graph</span><a class="headerlink" href="#id13" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>taxaplease check --graph 1337 42
+
+╙── root
+└─╼ cellular organisms
+    └─╼ Bacteria
+        ├─╼ Bacillati
+        │   └─╼ Bacillota
+        │       └─╼ Bacilli
+        │           └─╼ Lactobacillales
+        │               └─╼ Streptococcaceae
+        │                   └─╼ Streptococcus
+        │                       └─╼ Streptococcus hyointestinalis
+        └─╼ Pseudomonadati
+            └─╼ Myxococcota
+                └─╼ Myxococcia
+                    └─╼ Myxococcales
+                        └─╼ Cystobacterineae
+                            └─╼ Archangiaceae
+                                └─╼ Cystobacter
+</pre></div>
+</div>
+</div>
+<p>This gives a tree-like plot of the relationship between the two taxa.
+<cite>taxaplease check –graph</cite> can actually take an arbitrary number of taxids
+as arguments, so it is possible to have much more than two.</p>
+<p>Behind the scenes, this is rendered using <a class="reference external" href="https://networkx.org/en/">NetworkX</a>.
+Using the corresponding methods in Python allows full control over how the graph is rendered.</p>
+<div class="literal-block-wrapper docutils container" id="id14">
+<div class="code-block-caption"><span class="caption-text">Interacting with taxaPlease networkX directed graphs in python</span><a class="headerlink" href="#id14" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pylab</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
+
+<span class="n">tp</span> <span class="o">=</span> <span class="n">TaxaPlease</span><span class="p">()</span>
+
+<span class="c1">## generate the taxonomy graph using taxaPlease</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">generate_taxonomy_graph</span><span class="p">(</span><span class="mi">1337</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span>
+
+<span class="c1">## draw using the spectral layout and save to file</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_spectral</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;nx_example_spectral.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<figure class="align-default" id="id15">
+<img alt="_images/nx_example_spectral.png" src="_images/nx_example_spectral.png" />
+<figcaption>
+<p><span class="caption-text">Directed graph plotted using the networkX spectral layout</span><a class="headerlink" href="#id15" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="useful-concepts-to-understand">
+<h2>Useful concepts to understand<a class="headerlink" href="#useful-concepts-to-understand" title="Link to this heading">#</a></h2>
+<section id="baltimore-classification">
+<h3>Baltimore classification<a class="headerlink" href="#baltimore-classification" title="Link to this heading">#</a></h3>
+<p>Baltimore classification is a scheme for grouping viruses based on nucleic acid type,
+sense and transcription method. See <a class="reference external" href="&quot;https://en.wikipedia.org/wiki/Baltimore_classification&quot;">the Wikipedia page on Baltimore classification</a>
+for more information.</p>
+<p>There are 7 groups within the classification:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Group</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Abbreviation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>I</p></td>
+<td><p>double-stranded DNA viruses</p></td>
+<td><p>dsDNA</p></td>
+</tr>
+<tr class="row-odd"><td><p>II</p></td>
+<td><p>single-stranded DNA viruses</p></td>
+<td><p>ssDNA</p></td>
+</tr>
+<tr class="row-even"><td><p>III</p></td>
+<td><p>double-stranded RNA viruses</p></td>
+<td><p>dsRNA</p></td>
+</tr>
+<tr class="row-odd"><td><p>IV</p></td>
+<td><p>positive-sense single-stranded RNA viruses</p></td>
+<td><p>+ssRNA</p></td>
+</tr>
+<tr class="row-even"><td><p>V</p></td>
+<td><p>negative-sense single-stranded RNA viruses</p></td>
+<td><p>-ssRNA</p></td>
+</tr>
+<tr class="row-odd"><td><p>VI</p></td>
+<td><p>single-stranded RNA viruses with a DNA intermediate in their life cycle</p></td>
+<td><p>ssRNA-RT</p></td>
+</tr>
+<tr class="row-even"><td><p>VII</p></td>
+<td><p>double-stranded DNA viruses with an RNA intermediate in their life cycle</p></td>
+<td><p>dsDNA-RT</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>TaxaPlease can be used to get the abbreviated column from the above table, given a taxid:</p>
+<div class="literal-block-wrapper docutils container" id="id16">
+<div class="code-block-caption"><span class="caption-text">Getting the Baltimore classification for a taxid</span><a class="headerlink" href="#id16" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
+
+<span class="n">tp</span> <span class="o">=</span> <span class="n">TaxaPlease</span><span class="p">()</span>
+
+<span class="c1">## look up SARS-CoV-2</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tp</span><span class="o">.</span><span class="n">get_baltimore_classification</span><span class="p">(</span><span class="mi">2697049</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The command doesn’t actually return a Baltimore group (I to VII) - instead it returns the
+abbreviation, for example “+ssRNA” for SARS-CoV-2. This is probably more useful…</p>
+</div>
+</section>
+<section id="phages">
+<h3>Phages<a class="headerlink" href="#phages" title="Link to this heading">#</a></h3>
+<p>When we’re talking about phages, we’re probably talking about bacteriophages which for the most
+part sit under the taxonomic class <strong>Caudoviricetes</strong> which contains double-stranded DNA bacteriophagees.
+There are other bacteriophages, however, such as the single-stranded DNA bacteriophages in the <strong>Loebvirae</strong>
+kingdom, RNA bacteriophages in the class <strong>Vidaverviricetes</strong> and several others.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is a genus <strong>Atsuirnavirus</strong> which contains the species <strong>Atsuirnavirus caloris</strong>.
+This is a bacteriophage that infects thermoacidophiles, but it does not have a taxid at
+present and so cannot be labelled with taxaPlease.</p>
+</div>
+<p>Bacteriophages are viruses which infect bacteria, but there are other phages such as archaeal
+viruses (viruses that infect archaea) and virophages (viruses that require the co-infection of another virus).</p>
+<p>TaxaPlease has the ability to check if a given taxid corresponds to any of these 3 phage groups.</p>
+<div class="literal-block-wrapper docutils container" id="id17">
+<div class="code-block-caption"><span class="caption-text">Checking a taxid to see if it is a phage</span><a class="headerlink" href="#id17" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
+
+<span class="n">tp</span> <span class="o">=</span> <span class="n">TaxaPlease</span><span class="p">()</span>
+
+<span class="c1">## Bowservirus bowser</span>
+<span class="n">phage_taxid</span> <span class="o">=</span> <span class="mi">2560487</span>
+
+<span class="k">assert</span> <span class="n">tp</span><span class="o">.</span><span class="n">isPhage</span><span class="p">(</span><span class="n">phage_taxid</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="getting_started.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Getting started</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="api.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API reference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#customising-your-installation">Customising your installation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-a-different-version-of-the-ncbi-taxonomy-database">Using a different version of the NCBI taxonomy database</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#storing-the-taxaplease-sqlite-database-in-a-different-location">Storing the taxaPlease sqlite database in a different location</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reusable-patterns">Reusable patterns</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-all-the-parent-records-for-a-taxid">Getting all the parent records for a taxid</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialisation-for-single-process-and-multiprocess-scripts">Initialisation for single process and multiprocess scripts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-running-lots-of-queries">Efficiently running lots of queries</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#deduplication-and-dictionary-lookup">Deduplication and dictionary lookup</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sorting-and-memoisation">Sorting and memoisation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quirky-bits">Quirky bits</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reverse-lookup">Reverse lookup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-a-graph">Generating a graph</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#useful-concepts-to-understand">Useful concepts to understand</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#baltimore-classification">Baltimore classification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phages">Phages</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/user_guide.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, UK Health Security Agency.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

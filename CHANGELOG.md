@@ -1,5 +1,19 @@
 # Changelog
 
+## [v2.1.0] - 2026-01-21
+
+### Added
+
+HTML docs for taxaPlease using Sphinx.
+
+### Changed
+
+None
+
+### Fixed
+
+Fix a bug with the `taxaplease taxonomy --get` command that prevented this working.
+
 ## [v2.0.0] - 2026-01-20
 
 ### Added
