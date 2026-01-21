@@ -132,7 +132,7 @@ class TaxaPlease:
             )
         )
 
-        absolute_url_list = [urljoin(url, Path.name(x)) for x in relative_url_list]
+        absolute_url_list = [urljoin(url, Path(x).name) for x in relative_url_list]
 
         return absolute_url_list
 
