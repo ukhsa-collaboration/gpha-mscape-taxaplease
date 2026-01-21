@@ -173,7 +173,8 @@ def handle_check_request(args, taxapleaseObj):
 
 def handle_taxonomy_request(args, taxapleaseObj):
     if args.get:
-        return taxapleaseObj.get_taxonomy_url()
+        print(taxapleaseObj.get_taxonomy_url())
+        return
     elif args.set:
         return taxapleaseObj.set_taxonomy_url(args.set)
     else:
