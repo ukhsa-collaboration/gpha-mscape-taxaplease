@@ -1,5 +1,19 @@
 # Changelog
 
+## [v2.1.1] - 2026-02-05
+
+### Added
+
+None
+
+### Changed
+
+None
+
+### Fixed
+
+Fix a bug where `taxaplease check --levels-between 0 2` would get caught in an infinite loop.
+
 ## [v2.1.0] - 2026-01-21
 
 ### Added
