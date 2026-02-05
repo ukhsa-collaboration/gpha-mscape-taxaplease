@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup as bs
 
 import taxaplease.taxaplease_data as tpData
 
-__version__ = "2.1.0"
+__version__ = "2.1.1"
 
 
 class TaxaPlease:
