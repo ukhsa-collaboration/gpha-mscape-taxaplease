@@ -478,6 +478,7 @@ class TaxaPlease:
         """
         ## do it one way
         left_parents = set(self.get_all_parent_taxids(inputTaxidLeft, includeSelf=True))
+        left_parents.add(1)
 
         tempRightId = inputTaxidRight
         left_levels = 0
@@ -492,6 +493,7 @@ class TaxaPlease:
         right_parents = set(
             self.get_all_parent_taxids(inputTaxidRight, includeSelf=True)
         )
+        right_parents.add(1)
 
         tempLeftId = inputTaxidLeft
         right_levels = 0
