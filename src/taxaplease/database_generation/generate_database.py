@@ -42,10 +42,14 @@ def download_file(url, *, destinationDir=None):
 def main(
     tempdir,
     *,
-    ncbi_taxonomy_data_url="https://ftp.ncbi.nih.gov/pub/taxonomy/new_taxdump/new_taxdump.tar.gz",
+    ncbi_taxonomy_data_url=None,
     db_path=None
 ):
     start_time = datetime.datetime.now()
+
+    ## default URL if not specified
+    if not ncbi_taxonomy_data_url:
+        ncbi_taxonomy_data_url = "https://ftp.ncbi.nih.gov/pub/taxonomy/new_taxdump/new_taxdump.tar.gz"
 
     #######################################
     # Downloading and extracting the data #

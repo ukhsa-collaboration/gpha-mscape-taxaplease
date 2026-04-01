@@ -18,13 +18,20 @@ class TaxaPlease:
     Class for wrangling NCBI taxids
     """
 
-    def __init__(self, *, database=None):
+    def __init__(self, *, database=None, taxonomy_url=None):
+        """
+        Instantiation order for the self attributes is
+        incredibly important - self.__taxonomy_url needs
+        to exist before self.con else we can't init the
+        database.
+        """
         self.db = database
-        self.con = self._init_database_connection()
-        self.column_names = self._init_column_names()
         self.phages = tpData.PHAGES
         self.baltimore = tpData.BALTIMORE_CLASSIFICATION
         self.viral_realms = tpData.VIRAL_REALMS
+        self.__taxonomy_url = taxonomy_url
+        self.con = self._init_database_connection()
+        self.column_names = self._init_column_names()
 
     def _init_database_connection(self) -> sqlite3.Connection:
         """
@@ -62,7 +69,7 @@ class TaxaPlease:
 
         ## if the database doesn't exist, create it
         if not db_path.is_file():
-            self._create_database(db_path=db_path)
+            self._create_database(db_path=db_path, taxonomy_url=self.__taxonomy_url)
 
         return sqlite3.connect(db_path)
 
@@ -107,6 +114,26 @@ class TaxaPlease:
         self._create_database(taxonomy_url=url, db_path=self.db)
 
         return None
+    
+    def get_current_taxonomy_url_from_database(self):
+        """
+        If the database exists, get the taxonomy URL from
+        the metadata table.
+
+        If not, return None
+        """
+        try:
+            cur = self.con.cursor()
+            res = cur.execute(
+                "SELECT value FROM metadata WHERE key = 'ncbi_taxonomy_data_url'"
+            ).fetchone()
+
+            if res:
+                return res[0]
+            else:
+                return None
+        except:
+            return None
 
     @staticmethod
     def __process_file_listing(file_listing, url):

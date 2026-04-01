@@ -196,7 +196,7 @@ def main():
         case "check":
             result = handle_check_request(args, tp)
         case "version":
-            result = {"taxaplease_version": tpVersion}
+            result = {"taxaplease_version": tpVersion, "taxonomy_url": tp.get_current_taxonomy_url_from_database()}
         case "taxonomy":
             handle_taxonomy_request(args, tp)
             result = -1
