@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup as bs
 
 import taxaplease.taxaplease_data as tpData
 
-__version__ = "2.1.1"
+__version__ = "2.2.0"
 
 
 class TaxaPlease:
@@ -111,9 +111,19 @@ class TaxaPlease:
         return [x[0] for x in cur.description]
 
     def set_taxonomy_url(self, url: str):
-        self._create_database(taxonomy_url=url, db_path=self.db)
+        current_url = self.get_current_taxonomy_url_from_database()
 
-        return None
+        if url == current_url:
+            print(f"Taxonomy version is {current_url}")
+            return None
+        elif current_url:
+            print(f"Changing taxonomy version from {current_url} to {url}")
+            self._create_database(taxonomy_url=url, db_path=self.db)
+            return None
+        else:
+            print(f"Setting taxonomy version to {url}")
+            self._create_database(taxonomy_url=url, db_path=self.db)
+            return None
     
     def get_current_taxonomy_url_from_database(self):
         """
