@@ -131,7 +131,7 @@ def test_current_taxid():
 def test_deleted_taxid():
     taxaPlease = TaxaPlease()
 
-    deletedTaxid = 3467805
+    deletedTaxid = 3
 
     assert taxaPlease.checkTaxidStatus(deletedTaxid) == {
         "isCurrent": False,
