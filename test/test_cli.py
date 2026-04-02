@@ -204,7 +204,7 @@ def test_current_taxid(instantiate_db):
 
 
 def test_deleted_taxid(instantiate_db):
-    deletedTaxid = 3467805
+    deletedTaxid = 3
 
     result = subprocess.run(
         ["taxaplease", "check", "--status", str(deletedTaxid)],

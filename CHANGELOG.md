@@ -1,5 +1,21 @@
 # Changelog
 
+## [v2.2.0] - 2026-04-02
+
+### Added
+
+`taxaplease version` now additionally gives the taxonomy URL used to build the database.
+
+### Changed
+
+None
+
+### Fixed
+
+Fix a (harmless) bug during database building, where for a new taxaplease database with a specified taxonomy URL,
+the default `new_taxdump.tar.gz` would be needlessly downloaded and processed before downloading the specified
+taxdump file and processing that.
+
 ## [v2.1.1] - 2026-02-05
 
 ### Added

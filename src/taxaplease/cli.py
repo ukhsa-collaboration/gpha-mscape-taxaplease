@@ -171,11 +171,15 @@ def handle_check_request(args, taxapleaseObj):
         return "Usage: taxaplease check -h"
 
 
-def handle_taxonomy_request(args, taxapleaseObj):
+def handle_taxonomy_request(args):
     if args.get:
+        ## init like normal
+        taxapleaseObj = TaxaPlease(database=args.database)
         print(taxapleaseObj.get_taxonomy_url())
         return
     elif args.set:
+        ## init specifying taxonomy URL
+        taxapleaseObj = TaxaPlease(database=args.database, taxonomy_url=args.set)
         return taxapleaseObj.set_taxonomy_url(args.set)
     else:
         return "Usage: taxaplease taxonomy -h"
@@ -184,6 +188,12 @@ def handle_taxonomy_request(args, taxapleaseObj):
 def main():
     args = init_argparser().parse_args()
 
+    ## special case
+    if args.subcommand == "taxonomy":
+        handle_taxonomy_request(args)
+        return
+
+    ## init a taxaplease object
     tp = TaxaPlease(database=args.database)
 
     result = None
@@ -196,10 +206,7 @@ def main():
         case "check":
             result = handle_check_request(args, tp)
         case "version":
-            result = {"taxaplease_version": tpVersion}
-        case "taxonomy":
-            handle_taxonomy_request(args, tp)
-            result = -1
+            result = {"taxaplease_version": tpVersion, "taxonomy_url": tp.get_current_taxonomy_url_from_database()}
         case _:
             raise Exception(f"Unknown subcommand {args.subcommand}")
 
