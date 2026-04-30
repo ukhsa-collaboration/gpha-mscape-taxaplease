@@ -1,5 +1,35 @@
 # Changelog
 
+## [v2.2.1] - 2026-04-30
+
+### Added
+
+New methods added: 
+
+```python
+from taxaplease import TaxaPlease
+
+tp = TaxaPlease()
+
+## get specified rank taxid
+## tp.get_specified_rank_taxid(inputTaxid, targetRank)
+print(tp.get_specified_rank_taxid(1337, "class"))
+>>> 91061
+
+## get specified level record
+## tp.get_specified_rank_record(inputTaxid, targetRank)
+print(tp.get_specified_rank_record(1337, "class"))
+>>> {'taxid': 91061, 'name': 'Bacilli', 'rank': 'class', 'parent_taxid': 1239}
+```
+
+### Changed
+
+None
+
+### Fixed
+
+None
+
 ## [v2.2.0] - 2026-04-02
 
 ### Added

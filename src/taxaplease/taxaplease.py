@@ -318,7 +318,7 @@ class TaxaPlease:
         ## or end up with nothing
         return self.get_specified_rank_taxid(rec["parent_taxid"], targetRank)
     
-    def get_specified_level_record(self, inputTaxid, targetRank):
+    def get_specified_rank_record(self, inputTaxid, targetRank):
         """
         Takes in an NCBI taxid, and a taxonomic rank and traverses
         up the tree until we find something labelled with that rank,
