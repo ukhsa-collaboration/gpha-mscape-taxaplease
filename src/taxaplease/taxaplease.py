@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup as bs
 
 import taxaplease.taxaplease_data as tpData
 
-__version__ = "2.2.0"
+__version__ = "2.2.1"
 
 
 class TaxaPlease:
@@ -279,6 +279,70 @@ class TaxaPlease:
             return dict(zip(self.column_names, res, strict=False))
         else:
             return None
+        
+    def get_specified_rank_taxid(self, inputTaxid, targetRank):
+        """
+        Takes in an NCBI taxid, and a taxonomic rank and traverses
+        up the tree until we find something labelled with that rank,
+        or hit a brick wall.
+
+        Parameters
+        ----------
+        inputTaxid: int or str
+            NCBI taxid
+        targetRank: str
+            Taxonomic level to find (for example, "class")
+
+        Returns
+        -------
+        Optional[int]
+            NCBI taxid corresponding to the class
+        """
+        ## check we aren't already at that level
+        rec = self.get_record(inputTaxid)
+        
+        if not rec:
+            return None
+
+        if rec["rank"] == targetRank:
+            return inputTaxid
+
+        ## check we didn't get nothing
+        if not rec["rank"]:
+            return None
+
+        if inputTaxid == 1:
+            return None
+
+        ## recursively get the parent until we find the level
+        ## or end up with nothing
+        return self.get_specified_rank_taxid(rec["parent_taxid"], targetRank)
+    
+    def get_specified_level_record(self, inputTaxid, targetRank):
+        """
+        Takes in an NCBI taxid, and a taxonomic rank and traverses
+        up the tree until we find something labelled with that rank,
+        or hit a brick wall.
+
+        Parameters
+        ----------
+        inputTaxid: int or str
+            NCBI taxid
+        targetRank: str
+            Taxonomic level to find (for example, "class")
+
+        Returns
+        -------
+        Optional[dict]
+            taxa database record corresponding to the specified
+            taxonomic level.
+        """
+        rec = self.get_specified_rank_taxid(inputTaxid, targetRank)
+        
+        if rec:
+            return self.get_record(rec)
+        else:
+            return None
 
     def get_genus_taxid(self, inputTaxid: int | str) -> int | None:
         """
@@ -298,25 +362,7 @@ class TaxaPlease:
         Optional[int]
             NCBI taxid corresponding to the genus
         """
-        ## check we aren't already a genus
-        rec = self.get_record(inputTaxid)
-
-        if not rec:
-            return None
-
-        if rec["rank"] == "genus":
-            return inputTaxid
-
-        ## check we didn't get nothing
-        if not rec["rank"]:
-            return None
-
-        if inputTaxid == 1:
-            return None
-
-        ## recursively get the parent until we find the genus
-        ## or end up with nothing
-        return self.get_genus_taxid(rec["parent_taxid"])
+        return self.get_specified_rank_taxid(inputTaxid, "genus")
 
     @functools.cache  # noqa: B019
     def get_species_taxid(self, inputTaxid: int | str) -> int | str | None:
@@ -341,30 +387,14 @@ class TaxaPlease:
         Optional[int]
             NCBI taxid corresponding to the species
         """
-        ## check we aren't already a species
-        rec = self.get_record(inputTaxid)
-
-        if not rec:
-            return None
-
-        if rec["rank"] == "species":
-            return inputTaxid
-
-        ## check we didn't get nothing
-        if not rec["rank"]:
-            return None
-
-        if inputTaxid == 1:
-            return None
-
-        ## recursively get the parent until we find the species
-        ## or end up with nothing
-        return self.get_species_taxid(rec["parent_taxid"])
+        return self.get_specified_rank_taxid(inputTaxid, "species")
 
     def get_superkingdom_taxid(self, inputTaxid: int | str) -> int | None:
         """
         Takes in an NCBI taxid, traverses up the tree until we find
         something labelled superkingdom, or hit a brick wall.
+
+        Not all versions of the taxonomy have a "superkingdom" level.
 
         Parameters
         ----------
@@ -376,22 +406,7 @@ class TaxaPlease:
         Optional[int]
             NCBI taxid corresponding to the superkingdom
         """
-        ## check we aren't already a superkingdom
-        rec = self.get_record(inputTaxid)
-
-        if rec["rank"] == "superkingdom":
-            return inputTaxid
-
-        ## check we didn't get nothing
-        if not rec["rank"]:
-            return None
-
-        if inputTaxid == 1:
-            return None
-
-        ## recursively get the parent until we find the superkingdom
-        ## or end up with nothing
-        return self.get_superkingdom_taxid(rec["parent_taxid"])
+        return self.get_specified_rank_taxid(inputTaxid, "superkingdom")
 
     def get_all_parent_taxids(
         self, inputTaxid: int | str, *, includeSelf: bool = False
