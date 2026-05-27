@@ -1,18 +1,4 @@
 # Changelog
-## [v2.2.2] - 2026-05-05
-
-### Added
-
-None
-
-### Changed
-
-Pins python version <3.14
-
-### Fixed
-
-None
-
 
 ## [v2.2.2] - 2026-05-27
 
@@ -22,7 +8,7 @@ None
 
 ### Changed
 
-None
+Pins python version <3.14
 
 ### Fixed
 
