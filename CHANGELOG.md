@@ -1,5 +1,39 @@
 # Changelog
 
+## [v2.2.2] - 2026-05-27
+
+### Added
+
+None
+
+### Changed
+
+None
+
+### Fixed
+
+Fixed a bug that occurs when using the `get_all_parent_taxids()` method on a stringified "1".
+
+Previously, root got included twice - once as a string and once as an int. No such issue
+occurred if 1 was passed as an integer instead.
+
+```python
+from taxaplease import TaxaPlease
+
+tp = TaxaPlease()
+
+## unexpected
+tp.get_all_parent_taxids("1", includeSelf=True)
+>>> ("1", 1,)
+
+## now both invocations work like this
+tp.get_all_parent_taxids(1, includeSelf=True)
+>>> (1,)
+```
+
+We now coerce to int the taxid passed to the method, and do an additional check to make sure
+that any ids added to the return list are not already in the list.
+
 ## [v2.2.1] - 2026-04-30
 
 ### Added

@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup as bs
 
 import taxaplease.taxaplease_data as tpData
 
-__version__ = "2.2.1"
+__version__ = "2.2.2"
 
 
 class TaxaPlease:
@@ -432,7 +432,7 @@ class TaxaPlease:
         return_list = []
 
         if includeSelf:
-            return_list.append(inputTaxid)
+            return_list.append(int(inputTaxid))
 
         tempTaxa = inputTaxid
 
@@ -442,7 +442,8 @@ class TaxaPlease:
             if not tempTaxa:
                 break
 
-            return_list.append(tempTaxa)
+            if tempTaxa not in return_list:
+                return_list.append(tempTaxa)
 
         return tuple(return_list)
 
