@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup as bs
 
 import taxaplease.taxaplease_data as tpData
 
-__version__ = "2.2.2"
+__version__ = "2.2.3"
 
 
 class TaxaPlease:
@@ -826,3 +826,63 @@ class TaxaPlease:
         else:
             ## got nothing
             return None
+        
+    def is_child_of(self, *, child=None, parent=None, direct=False):
+        """
+        Takes in two taxids labelled "parent" and "child"
+
+        Checks if the "child" taxid is actually a child of "parent"
+
+        Returns True if it is, or False if it isn't
+
+        Can optionally specify direct=True to check if the child is
+        an immediate descendent on the parent.
+
+        Parameters
+        ----------
+        child int or str
+            NCBI taxid
+        parent int or str
+            NCBI taxid
+        direct bool
+            Check if child is direct descendent of parent
+
+        Returns
+        -------
+        Bool
+            True if parent taxid is a parent of child taxid, else False
+        """
+        if not direct:
+            taxids_to_check_for_parent = self.get_all_parent_taxids(child)
+            return parent in taxids_to_check_for_parent
+        else:
+            return parent == self.get_parent_taxid(child)
+
+    def is_parent_of(self, *, parent=None, child=None, direct=False):
+        """
+        Alias of is_child_of
+
+        Takes in two taxids labelled "parent" and "child"
+
+        Checks if the "child" taxid is actually a child of "parent"
+
+        Returns True if it is, or False if it isn't
+
+        Can optionally specify direct=True to check if the child is
+        an immediate descendent on the parent.
+
+        Parameters
+        ----------
+        child int or str
+            NCBI taxid
+        parent int or str
+            NCBI taxid
+        direct bool
+            Check if child is direct descendent of parent
+
+        Returns
+        -------
+        Bool
+            True if parent taxid is a parent of child taxid, else False
+        """
+        return self.is_child_of(parent=parent, child=child, direct=direct)

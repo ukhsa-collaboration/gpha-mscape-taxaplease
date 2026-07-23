@@ -1,5 +1,40 @@
 # Changelog
 
+## [v2.2.3] - 2026-07-23
+
+### Added
+
+New methods added, `is_child_of` and `is_parent_of`:
+
+```python
+from taxaplease import TaxaPlease
+
+tp = TaxaPlease()
+
+## checks if a taxid is a child of another taxid
+print(tp.is_child_of(child=1337, parent=1301))
+>>> True
+
+## alias of is_child_of
+print(tp.is_parent_of(parent=1300, child=1337))
+>>> True
+
+## optional checking if the taxid is a "direct" descendent
+print(tp.is_parent_of(parent=1301, child=1337, direct=True))
+>>> True
+## 1300 is two ranks above 1337, so is not "direct"
+print(tp.is_parent_of(parent=1300, child=1337, direct=True))
+>>> False
+``` 
+
+### Changed
+
+None
+
+### Fixed
+
+None
+
 ## [v2.2.2] - 2026-05-27
 
 ### Added

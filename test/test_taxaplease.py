@@ -36,7 +36,9 @@ def test_common_parent_record_distant_taxa():
     taxid_canis_lupus = 9612
     taxid_aloe_vera = 34199
     assert (
-        taxaPlease.get_common_parent_record(taxid_canis_lupus, taxid_aloe_vera).get("name")
+        taxaPlease.get_common_parent_record(taxid_canis_lupus, taxid_aloe_vera).get(
+            "name"
+        )
         == "Eukaryota"
     )
 
@@ -60,7 +62,9 @@ def test_levels_between_close_taxa():
     taxid_e_coli = 562
     taxid_s_flexneri = 623
 
-    assert taxaPlease.get_number_of_levels_between_taxa(taxid_e_coli, taxid_s_flexneri) == {
+    assert taxaPlease.get_number_of_levels_between_taxa(
+        taxid_e_coli, taxid_s_flexneri
+    ) == {
         "left_levels_to_common_parent": 2,
         "right_levels_to_common_parent": 2,
         "total_levels_between_taxa": 4,
@@ -74,7 +78,9 @@ def test_levels_between_distant_taxa():
     taxid_e_coli = 562
     taxid_canis_lupus = 9612
 
-    assert taxaPlease.get_number_of_levels_between_taxa(taxid_e_coli, taxid_canis_lupus) == {
+    assert taxaPlease.get_number_of_levels_between_taxa(
+        taxid_e_coli, taxid_canis_lupus
+    ) == {
         "left_levels_to_common_parent": 26,
         "right_levels_to_common_parent": 8,
         "total_levels_between_taxa": 34,
@@ -161,3 +167,21 @@ def test_phages():
 
     assert taxaPlease.isPhage(topLevelPhage)
     assert taxaPlease.isPhage(subLevelPhage)
+
+
+def test_is_child_of_strict():
+    taxaPlease = TaxaPlease()
+
+    assert taxaPlease.is_child_of(child=1337, parent=1301, direct=True)
+    assert taxaPlease.is_parent_of(parent=1301, child=1337, direct=True)
+    assert not taxaPlease.is_child_of(child=1337, parent=1300, direct=True)
+    assert not taxaPlease.is_parent_of(parent=1300, child=1337, direct=True)
+
+
+def test_is_child_of_not_strict():
+    taxaPlease = TaxaPlease()
+
+    assert taxaPlease.is_child_of(child=1337, parent=1301)
+    assert taxaPlease.is_parent_of(parent=1301, child=1337)
+    assert taxaPlease.is_child_of(child=1337, parent=1300)
+    assert taxaPlease.is_parent_of(parent=1300, child=1337)
