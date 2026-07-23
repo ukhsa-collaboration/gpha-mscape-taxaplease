@@ -854,9 +854,9 @@ class TaxaPlease:
         """
         if not direct:
             taxids_to_check_for_parent = self.get_all_parent_taxids(child)
-            return parent in taxids_to_check_for_parent
+            return int(parent) in taxids_to_check_for_parent
         else:
-            return parent == self.get_parent_taxid(child)
+            return int(parent) == self.get_parent_taxid(child)
 
     def is_parent_of(self, *, parent=None, child=None, direct=False):
         """
