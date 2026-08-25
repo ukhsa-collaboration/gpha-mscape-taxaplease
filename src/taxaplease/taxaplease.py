@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup as bs
 
 import taxaplease.taxaplease_data as tpData
 
-__version__ = "2.2.3"
+__version__ = "2.3.0"
 
 
 class TaxaPlease:
@@ -93,12 +93,25 @@ class TaxaPlease:
         import taxaplease.database_generation.generate_database as gd
 
         with tempfile.TemporaryDirectory() as tempdir:
-            if taxonomy_url:
-                ## if specified, use that
-                gd.main(tempdir, ncbi_taxonomy_data_url=taxonomy_url, db_path=db_path)
+            ## is it a path to a local folder
+            ## or a URL, or unspecified?
+            if taxonomy_url is not None and Path(taxonomy_url).is_dir():
+                ## it's a local folder
+                gd.build_and_ingest_local(
+                    tempdir,
+                    ncbi_taxonomy_data_url=Path(taxonomy_url).absolute(),
+                    db_path=db_path,
+                )
             else:
-                ## else use the latest
-                gd.main(tempdir, db_path=db_path)
+                ## it's a remote URL or unspecified
+                if taxonomy_url:
+                    ## if specified, use that
+                    gd.build_and_ingest_remote(
+                        tempdir, ncbi_taxonomy_data_url=taxonomy_url, db_path=db_path
+                    )
+                else:
+                    ## else use the latest
+                    gd.build_and_ingest_remote(tempdir, db_path=db_path)
 
     def _init_column_names(self) -> list:
         """
@@ -124,7 +137,7 @@ class TaxaPlease:
             print(f"Setting taxonomy version to {url}")
             self._create_database(taxonomy_url=url, db_path=self.db)
             return None
-    
+
     def get_current_taxonomy_url_from_database(self):
         """
         If the database exists, get the taxonomy URL from
@@ -279,7 +292,7 @@ class TaxaPlease:
             return dict(zip(self.column_names, res, strict=False))
         else:
             return None
-        
+
     def get_specified_rank_taxid(self, inputTaxid, targetRank):
         """
         Takes in an NCBI taxid, and a taxonomic rank and traverses
@@ -300,7 +313,7 @@ class TaxaPlease:
         """
         ## check we aren't already at that level
         rec = self.get_record(inputTaxid)
-        
+
         if not rec:
             return None
 
@@ -317,7 +330,7 @@ class TaxaPlease:
         ## recursively get the parent until we find the level
         ## or end up with nothing
         return self.get_specified_rank_taxid(rec["parent_taxid"], targetRank)
-    
+
     def get_specified_rank_record(self, inputTaxid, targetRank):
         """
         Takes in an NCBI taxid, and a taxonomic rank and traverses
@@ -338,7 +351,7 @@ class TaxaPlease:
             taxonomic level.
         """
         rec = self.get_specified_rank_taxid(inputTaxid, targetRank)
-        
+
         if rec:
             return self.get_record(rec)
         else:
@@ -658,9 +671,31 @@ class TaxaPlease:
 
         return bool(len(intersection))
 
+    def __get_available_database_tables(self) -> set:
+        """
+        Returns the set of table names in the taxaPlease database
+        """
+        cur = self.con.cursor()
+        res = cur.execute(
+            "SELECT name FROM sqlite_master WHERE type = 'table'"
+        ).fetchall()
+
+        return set([x[0] for x in res])
+
+    def __check_if_table_exists(self, table_name: str) -> bool:
+        """
+        Checks if a specific named table exists in the taxaPlease database
+        """
+        table_list = self.__get_available_database_tables()
+
+        return table_name in table_list
+
     def __checkIfTaxidDeleted(self, inputTaxid: int | str) -> bool:
         """
         Check if a taxid is in the deleted_taxa table
+
+        Raises a NotImplemented exception if the deleted_taxa table
+        is not present
 
         Parameters
         ----------
@@ -672,6 +707,11 @@ class TaxaPlease:
         bool:
             True if in the deleted table, else False
         """
+        if not self.__check_if_table_exists("deleted_taxa"):
+            raise NotImplementedError(
+                "TaxaPlease database built without deleted_taxa support"
+            )
+
         cur = self.con.cursor()
         res = cur.execute(
             "SELECT * FROM deleted_taxa WHERE taxid = ?", [inputTaxid]
@@ -683,6 +723,9 @@ class TaxaPlease:
         """
         Check if a taxid is in the merged table
 
+        Raises a NotImplemented exception if the merged_taxa table
+        is not present
+
         Parameters
         ----------
         inputTaxidLeft: int or str
@@ -693,6 +736,11 @@ class TaxaPlease:
         bool:
             If in the table, return the new taxid, else return False
         """
+        if not self.__check_if_table_exists("merged_taxa"):
+            raise NotImplementedError(
+                "TaxaPlease database built without merged_taxa support"
+            )
+
         cur = self.con.cursor()
         res = cur.execute(
             "SELECT new_taxid FROM merged_taxa WHERE old_taxid = ?", [inputTaxid]
@@ -826,7 +874,7 @@ class TaxaPlease:
         else:
             ## got nothing
             return None
-        
+
     def is_child_of(self, *, child=None, parent=None, direct=False):
         """
         Takes in two taxids labelled "parent" and "child"
