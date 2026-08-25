@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>User guide &#8212; taxaPlease 2.2.1 documentation</title>
+    <title>User guide &#8212; taxaPlease 2.3.0 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=16656018"></script>
+    <script src="_static/documentation_options.js?v=c3c8ae58"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide';</script>
@@ -110,7 +110,7 @@
   
   
   
-    <p class="title logo__title">taxaPlease 2.2.1 documentation</p>
+    <p class="title logo__title">taxaPlease 2.3.0 documentation</p>
   
 </a></div>
     
@@ -368,20 +368,53 @@ Python.</p>
 </div>
 <p>This should only be run when changing the taxonomy - there is no need to run it more often than this.</p>
 </section>
+<section id="using-a-local-dump-of-the-ncbi-taxonomy-database">
+<h3>Using a local dump of the NCBI taxonomy database<a class="headerlink" href="#using-a-local-dump-of-the-ncbi-taxonomy-database" title="Link to this heading">#</a></h3>
+<p>If you have a copy of the NCBI taxonomy locally containing at minimum the <cite>nodes.dmp</cite> and <cite>names.dmp</cite> files, you can
+build the taxaPlease database directly from this.</p>
+<p>For example, you can obtain a copy of the NCBI taxonomy and extract it using these commands:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Downloading and extracting the latest NCBI taxonomy</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">## download the latest taxonomy from NCBI</span>
+<span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">ftp</span><span class="o">.</span><span class="n">ncbi</span><span class="o">.</span><span class="n">nih</span><span class="o">.</span><span class="n">gov</span><span class="o">/</span><span class="n">pub</span><span class="o">/</span><span class="n">taxonomy</span><span class="o">/</span><span class="n">new_taxdump</span><span class="o">/</span><span class="n">new_taxdump</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="c1">## extract it into a folder</span>
+<span class="n">tar</span> <span class="n">zxvf</span> <span class="n">new_taxdump</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span> <span class="o">--</span><span class="n">one</span><span class="o">-</span><span class="n">top</span><span class="o">-</span><span class="n">level</span>
+</pre></div>
+</div>
+</div>
+<p>You can then build the taxaPlease database from either the CLI or in Python:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Building the taxaplease database from a local folder on the CLI</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">taxaplease</span> <span class="n">taxonomy</span> <span class="o">--</span><span class="nb">set</span> <span class="n">new_taxdump</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Building the taxaPlease database from a local folder in Python</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
+
+<span class="n">tp</span> <span class="o">=</span> <span class="n">TaxaPlease</span><span class="p">()</span>
+
+<span class="n">tp</span><span class="o">.</span><span class="n">set_taxonomy_url</span><span class="p">(</span><span class="s2">&quot;new_taxdump&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>This should only be run when changing the taxonomy - there is no need to run it more often than this.</p>
+</section>
 <section id="storing-the-taxaplease-sqlite-database-in-a-different-location">
 <h3>Storing the taxaPlease sqlite database in a different location<a class="headerlink" href="#storing-the-taxaplease-sqlite-database-in-a-different-location" title="Link to this heading">#</a></h3>
 <p>By default, the taxaPlease database is stored in your home directory - <code class="docutils literal notranslate"><span class="pre">~/.taxaplease/taxa.db</span></code>.</p>
 <p>If you wish to store it elsewhere, or to have multiple databases (perhaps built with different versions
 of the NCBI taxonomy) you can specify a path to the database when using the CLI or Python.</p>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">Using a custom database location from the CLI</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Using a custom database location from the CLI</span><a class="headerlink" href="#id6" title="Link to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">## use a custom database from the CLI</span>
 <span class="n">taxaplease</span> <span class="o">--</span><span class="n">database</span> <span class="n">mydir</span><span class="o">/</span><span class="n">custom</span><span class="o">.</span><span class="n">db</span> <span class="n">record</span> <span class="o">--</span><span class="n">record</span> <span class="mi">1337</span>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">Using a custom database location in Python</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Using a custom database location in Python</span><a class="headerlink" href="#id7" title="Link to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
 
 <span class="c1">## specify a custom database location in Python</span>
@@ -399,8 +432,8 @@ of the NCBI taxonomy) you can specify a path to the database when using the CLI 
 <p>TaxaPlease has a method for getting a record given a taxid, and for getting parent taxids
 given a taxid. There is no method for getting all parent records, however.</p>
 <p>You can do this with a pattern like this:</p>
-<div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-text">Getting all parent records</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Getting all parent records</span><a class="headerlink" href="#id8" title="Link to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
 
 <span class="n">tp</span> <span class="o">=</span> <span class="n">TaxaPlease</span><span class="p">()</span>
@@ -427,8 +460,8 @@ parent taxids.</p>
 </div>
 <p>With this, a taxaPlease object has been created and assigned to the variable <code class="docutils literal notranslate"><span class="pre">tp</span></code>.</p>
 <p>If you wanted to loop through a set of IDs, it might be tempting to do something like this:</p>
-<div class="literal-block-wrapper docutils container" id="id6">
-<div class="code-block-caption"><span class="caption-text">Don’t do this</span><a class="headerlink" href="#id6" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Don’t do this</span><a class="headerlink" href="#id9" title="Link to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
 
 <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="mi">68</span><span class="p">,</span> <span class="mi">419</span><span class="p">,</span> <span class="mi">665</span><span class="p">,</span> <span class="mi">1336</span><span class="p">,</span> <span class="mi">8007</span><span class="p">]</span>
@@ -441,8 +474,8 @@ parent taxids.</p>
 </div>
 <p>However, this approach would keep reinitialising taxaPlease on each loop. It’s more efficient to
 initialise the class outside the loop so the object can be reused:</p>
-<div class="literal-block-wrapper docutils container" id="id7">
-<div class="code-block-caption"><span class="caption-text">Do this!</span><a class="headerlink" href="#id7" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Do this!</span><a class="headerlink" href="#id10" title="Link to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
 
 <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="mi">68</span><span class="p">,</span> <span class="mi">419</span><span class="p">,</span> <span class="mi">665</span><span class="p">,</span> <span class="mi">1336</span><span class="p">,</span> <span class="mi">8007</span><span class="p">]</span>
@@ -456,8 +489,8 @@ initialise the class outside the loop so the object can be reused:</p>
 <p>There is an exception to this - multiprocessing. TaxaPlease runs an sqlite3 database behind the scenes
 which does support being accessed from multiple processes, but individual cursor objects do not. In this
 case, it is best to have a taxaPlease instance <em>per process</em> in order to avoid any concurrency issues.</p>
-<div class="literal-block-wrapper docutils container" id="id8">
-<div class="code-block-caption"><span class="caption-text">Multiprocessing example, only do this if you have to…</span><a class="headerlink" href="#id8" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">Multiprocessing example, only do this if you have to…</span><a class="headerlink" href="#id11" title="Link to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
 
@@ -528,8 +561,8 @@ actually reasonably efficient to send many small queries.</p>
 one of two key patterns: deduplication and dictionary lookup or sorting and memoisation.</p>
 <section id="deduplication-and-dictionary-lookup">
 <h4>Deduplication and dictionary lookup<a class="headerlink" href="#deduplication-and-dictionary-lookup" title="Link to this heading">#</a></h4>
-<div class="literal-block-wrapper docutils container" id="id9">
-<div class="code-block-caption"><span class="caption-text">Deduplication and dictionary lookup</span><a class="headerlink" href="#id9" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">Deduplication and dictionary lookup</span><a class="headerlink" href="#id12" title="Link to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
 
 <span class="n">tp</span> <span class="o">=</span> <span class="n">TaxaPlease</span><span class="p">()</span>
@@ -564,8 +597,8 @@ one of two key patterns: deduplication and dictionary lookup or sorting and memo
 the same arguments again the previous result can be retrieved instead of calculating it
 again using a potentially exspensive bit of code such as a database lookup.</p>
 <p>If the order of results is not important, sorting will improve cache hits but this is optional.</p>
-<div class="literal-block-wrapper docutils container" id="id10">
-<div class="code-block-caption"><span class="caption-text">Sorting and memoisation</span><a class="headerlink" href="#id10" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption"><span class="caption-text">Sorting and memoisation</span><a class="headerlink" href="#id13" title="Link to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
 
@@ -613,8 +646,8 @@ to tackle this problem!</p>
 <p>This is not a supported feature of taxaPlease, and the database structure is potentially
 subject to change, which may break any code depending on “reverse lookup”.</p>
 </div>
-<div class="literal-block-wrapper docutils container" id="id11">
-<div class="code-block-caption"><span class="caption-text">Querying the taxaPlease sqlite database directly</span><a class="headerlink" href="#id11" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id14">
+<div class="code-block-caption"><span class="caption-text">Querying the taxaPlease sqlite database directly</span><a class="headerlink" href="#id14" title="Link to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
@@ -648,8 +681,8 @@ subject to change, which may break any code depending on “reverse lookup”.</
 <h3>Generating a graph<a class="headerlink" href="#generating-a-graph" title="Link to this heading">#</a></h3>
 <p>Let’s say you have a set of taxids and you want to know how many levels there
 are between them. You can run a query like this:</p>
-<div class="literal-block-wrapper docutils container" id="id12">
-<div class="code-block-caption"><span class="caption-text">Getting levels between a set of taxids</span><a class="headerlink" href="#id12" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id15">
+<div class="code-block-caption"><span class="caption-text">Getting levels between a set of taxids</span><a class="headerlink" href="#id15" title="Link to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">taxaplease</span> <span class="n">check</span> <span class="o">--</span><span class="n">levels</span><span class="o">-</span><span class="n">between</span> <span class="mi">1337</span> <span class="mi">42</span>
 
 <span class="p">{</span><span class="s2">&quot;left_levels_to_common_parent&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;right_levels_to_common_parent&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;total_levels_between_taxa&quot;</span><span class="p">:</span> <span class="mi">14</span><span class="p">}</span>
@@ -657,8 +690,8 @@ are between them. You can run a query like this:</p>
 </div>
 </div>
 <p>If you want to visualise that, you can use the <code class="docutils literal notranslate"><span class="pre">--graph</span></code> option:</p>
-<div class="literal-block-wrapper docutils container" id="id13">
-<div class="code-block-caption"><span class="caption-text">Using –graph</span><a class="headerlink" href="#id13" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id16">
+<div class="code-block-caption"><span class="caption-text">Using –graph</span><a class="headerlink" href="#id16" title="Link to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>taxaplease check --graph 1337 42
 
 ╙── root
@@ -686,8 +719,8 @@ are between them. You can run a query like this:</p>
 as arguments, so it is possible to have much more than two.</p>
 <p>Behind the scenes, this is rendered using <a class="reference external" href="https://networkx.org/en/">NetworkX</a>.
 Using the corresponding methods in Python allows full control over how the graph is rendered.</p>
-<div class="literal-block-wrapper docutils container" id="id14">
-<div class="code-block-caption"><span class="caption-text">Interacting with taxaPlease networkX directed graphs in python</span><a class="headerlink" href="#id14" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id17">
+<div class="code-block-caption"><span class="caption-text">Interacting with taxaPlease networkX directed graphs in python</span><a class="headerlink" href="#id17" title="Link to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pylab</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
@@ -703,10 +736,10 @@ Using the corresponding methods in Python allows full control over how the graph
 </pre></div>
 </div>
 </div>
-<figure class="align-default" id="id15">
+<figure class="align-default" id="id18">
 <img alt="_images/nx_example_spectral.png" src="_images/nx_example_spectral.png" />
 <figcaption>
-<p><span class="caption-text">Directed graph plotted using the networkX spectral layout</span><a class="headerlink" href="#id15" title="Link to this image">#</a></p>
+<p><span class="caption-text">Directed graph plotted using the networkX spectral layout</span><a class="headerlink" href="#id18" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -759,8 +792,8 @@ for more information.</p>
 </table>
 </div>
 <p>TaxaPlease can be used to get the abbreviated column from the above table, given a taxid:</p>
-<div class="literal-block-wrapper docutils container" id="id16">
-<div class="code-block-caption"><span class="caption-text">Getting the Baltimore classification for a taxid</span><a class="headerlink" href="#id16" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id19">
+<div class="code-block-caption"><span class="caption-text">Getting the Baltimore classification for a taxid</span><a class="headerlink" href="#id19" title="Link to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
 
 <span class="n">tp</span> <span class="o">=</span> <span class="n">TaxaPlease</span><span class="p">()</span>
@@ -791,8 +824,8 @@ present and so cannot be labelled with taxaPlease.</p>
 <p>Bacteriophages are viruses which infect bacteria, but there are other phages such as archaeal
 viruses (viruses that infect archaea) and virophages (viruses that require the co-infection of another virus).</p>
 <p>TaxaPlease has the ability to check if a given taxid corresponds to any of these 3 phage groups.</p>
-<div class="literal-block-wrapper docutils container" id="id17">
-<div class="code-block-caption"><span class="caption-text">Checking a taxid to see if it is a phage</span><a class="headerlink" href="#id17" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id20">
+<div class="code-block-caption"><span class="caption-text">Checking a taxid to see if it is a phage</span><a class="headerlink" href="#id20" title="Link to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">taxaplease</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaxaPlease</span>
 
 <span class="n">tp</span> <span class="o">=</span> <span class="n">TaxaPlease</span><span class="p">()</span>
@@ -857,6 +890,7 @@ viruses (viruses that infect archaea) and virophages (viruses that require the c
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#customising-your-installation">Customising your installation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-a-different-version-of-the-ncbi-taxonomy-database">Using a different version of the NCBI taxonomy database</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-a-local-dump-of-the-ncbi-taxonomy-database">Using a local dump of the NCBI taxonomy database</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#storing-the-taxaplease-sqlite-database-in-a-different-location">Storing the taxaPlease sqlite database in a different location</a></li>
 </ul>
 </li>
