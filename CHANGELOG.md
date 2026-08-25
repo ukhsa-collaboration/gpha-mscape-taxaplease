@@ -1,5 +1,48 @@
 # Changelog
 
+## [v2.3.0] - 2026-08-25
+
+### Added
+
+A path to a local NCBI taxonomy dump can be provided when building the database. 
+At minimum this must include the `nodes.dmp` and `names.dmp` files, but can optionally
+include the `delnodes.dmp` and `merged.dmp` files also.
+
+First obtain a copy of the taxonomy from somewhere and extract it:
+
+```bash
+## download the latest taxonomy from NCBI
+wget https://ftp.ncbi.nih.gov/pub/taxonomy/new_taxdump/new_taxdump.tar.gz
+## extract it into a folder
+tar zxvf new_taxdump.tar.gz --one-top-level
+```
+
+From the CLI:
+
+```bash
+## build the taxaplease database from a local folder
+taxaplease taxonomy --set new_taxdump
+```
+
+From Python:
+
+```python
+from taxaplease import TaxaPlease
+
+tp = TaxaPlease()
+
+## build the taxaplease database from a local folder
+tp.set_taxonomy_url("new_taxdump")
+```
+
+### Changed
+
+None
+
+### Fixed
+
+None
+
 ## [v2.2.3] - 2026-07-23
 
 ### Added
