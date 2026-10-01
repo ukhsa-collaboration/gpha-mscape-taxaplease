@@ -163,14 +163,14 @@ def test_phages():
     assert taxaPlease.isPhage(subLevelPhage)
 
 
-def test_get_all_child_taxids():
+def test_get_child_taxids():
     taxaPlease = TaxaPlease()
 
     taxid_lassa = 3052310  ## Mammarenavirus lassaense
     taxid_lassa_ga391 = 11621  ## Lassa virus GA391
     taxid_lassa_josiah = 11622  ## Lassa virus Josiah
 
-    assert taxaPlease.get_all_child_taxids(taxid_lassa) == (
+    assert set(taxaPlease.get_child_taxids(taxid_lassa)) == {
         taxid_lassa_ga391,
         taxid_lassa_josiah,
-    )
+    }
