@@ -446,6 +446,30 @@ class TaxaPlease:
 
         return tuple(return_list)
 
+    def get_child_taxids(self, inputTaxid: int | str) -> tuple:
+        """
+        Takes in an NCBI taxid, returns all direct children,
+        or an empty tuple if there are none.
+
+        Parameters
+        ----------
+        inputTaxid : int or str
+            NCBI taxid
+
+        Returns
+        -------
+        tuple
+            Child NCBI taxids, or an empty tuple
+        """
+        cur = self.con.cursor()
+        ## 1 has parent 1, so if taxid = parent dont include it
+        res = cur.execute(
+            "SELECT taxid FROM taxa WHERE parent_taxid = ? AND taxid != parent_taxid",
+            [inputTaxid],
+        ).fetchall()
+
+        return tuple(x[0] for x in res)
+
     def get_common_parent_taxid(
         self, inputTaxidLeft: int | str, inputTaxidRight: int | str
     ) -> int | str | None:
