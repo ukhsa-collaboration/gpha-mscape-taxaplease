@@ -163,6 +163,10 @@ def build_and_ingest_local(tempdir, *, ncbi_taxonomy_data_url=None, db_path=None
     print(f"{datetime.datetime.now()} Writing taxa table to {db_path.name}")
     concat_df.to_sql("taxa", con=conn, index_label="taxid", if_exists="replace")
 
+    print(f"{datetime.datetime.now()} Indexing taxa table in {db_path.name}")
+    conn.execute("CREATE INDEX IF NOT EXISTS ix_taxa_parent_taxid ON taxa(parent_taxid)")
+    conn.commit()
+
     ## create a metadata table that contains
     ## the current taxdatabase URL
     metadata_table_df = (
@@ -318,6 +322,10 @@ def build_and_ingest_remote(tempdir, *, ncbi_taxonomy_data_url=None, db_path=Non
     ## should overwrite the table if exists
     print(f"{datetime.datetime.now()} Writing taxa table to {db_path.name}")
     concat_df.to_sql("taxa", con=conn, index_label="taxid", if_exists="replace")
+
+    print(f"{datetime.datetime.now()} Indexing taxa table in {db_path.name}")
+    conn.execute("CREATE INDEX IF NOT EXISTS ix_taxa_parent_taxid ON taxa(parent_taxid)")
+    conn.commit()
 
     print(f"{datetime.datetime.now()} Writing deleted_taxa table to {db_path.name}")
     deleted_ids_df.to_sql(

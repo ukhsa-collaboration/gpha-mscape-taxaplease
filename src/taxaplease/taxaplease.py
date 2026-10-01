@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup as bs
 
 import taxaplease.taxaplease_data as tpData
 
-__version__ = "2.3.0"
+__version__ = "2.4.0"
 
 
 class TaxaPlease:
@@ -457,6 +457,69 @@ class TaxaPlease:
 
             if tempTaxa not in return_list:
                 return_list.append(tempTaxa)
+
+        return tuple(return_list)
+
+    def get_child_taxids(self, inputTaxid: int | str) -> tuple:
+        """
+        Takes in an NCBI taxid, returns all direct children,
+        or an empty tuple if there are none.
+
+        Parameters
+        ----------
+        inputTaxid : int or str
+            NCBI taxid
+
+        Returns
+        -------
+        tuple
+            Child NCBI taxids, or an empty tuple
+        """
+        cur = self.con.cursor()
+        ## 1 has parent 1, so if taxid = parent dont include it
+        res = cur.execute(
+            "SELECT taxid FROM taxa WHERE parent_taxid = ? AND taxid != parent_taxid",
+            [inputTaxid],
+        ).fetchall()
+
+        return tuple(x[0] for x in res)
+
+    def get_all_child_taxids(
+        self, inputTaxid: int | str, *, includeSelf: bool = False
+    ) -> tuple:
+        """
+        Takes in an NCBI taxid, gets all child taxids, including
+        children of children, in order of least specific to most specific.
+
+        Can optionally include the input taxid in the result.
+
+        Parameters
+        ----------
+        inputTaxid: int or str
+            NCBI taxid
+        includeSelf: bool (default: False)
+            Include the input taxid in the result
+
+        Returns
+        -------
+        tuple:
+            tuple of child taxids, from least to most specific
+        """
+        return_list = []
+
+        if includeSelf:
+            return_list.append(int(inputTaxid))
+
+        tempTaxa = [inputTaxid]
+
+        while tempTaxa:
+            nextTaxa = []
+
+            for parentTaxid in tempTaxa:
+                nextTaxa.extend(self.get_child_taxids(parentTaxid))
+
+            return_list.extend(nextTaxa)
+            tempTaxa = nextTaxa
 
         return tuple(return_list)
 
