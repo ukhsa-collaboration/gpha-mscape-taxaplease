@@ -1,5 +1,35 @@
 # Changelog
 
+## [v2.3.0] - 2026-10-01
+
+### Added
+
+New methods added: 
+
+```python
+from taxaplease import TaxaPlease
+
+tp = TaxaPlease()
+
+## get direct child taxids
+## tp.get_child_taxids(inputTaxid)
+print(tp.get_child_taxids(3052297))
+>>> (2850049,)
+
+## get all child taxids, recursively for everything under a taxid
+## tp.get_all_child_taxids(inputTaxid, includeSelf=False)
+print(tp.get_all_child_taxids(3052310, includeSelf=True))
+>>> (3052310, 11621, 11622)
+```
+
+### Changed
+
+New databases include an index on `taxa.parent_taxid` which makes child taxid lookups much faster (fast enough to actually work). Existing databases need to be regenerated to get the index.
+
+### Fixed
+
+None
+
 ## [v2.2.1] - 2026-04-30
 
 ### Added
