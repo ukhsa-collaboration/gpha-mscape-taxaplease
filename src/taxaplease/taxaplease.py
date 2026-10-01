@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup as bs
 
 import taxaplease.taxaplease_data as tpData
 
-__version__ = "2.3.0"
+__version__ = "2.4.0"
 
 
 class TaxaPlease:
@@ -93,12 +93,25 @@ class TaxaPlease:
         import taxaplease.database_generation.generate_database as gd
 
         with tempfile.TemporaryDirectory() as tempdir:
-            if taxonomy_url:
-                ## if specified, use that
-                gd.main(tempdir, ncbi_taxonomy_data_url=taxonomy_url, db_path=db_path)
+            ## is it a path to a local folder
+            ## or a URL, or unspecified?
+            if taxonomy_url is not None and Path(taxonomy_url).is_dir():
+                ## it's a local folder
+                gd.build_and_ingest_local(
+                    tempdir,
+                    ncbi_taxonomy_data_url=Path(taxonomy_url).absolute(),
+                    db_path=db_path,
+                )
             else:
-                ## else use the latest
-                gd.main(tempdir, db_path=db_path)
+                ## it's a remote URL or unspecified
+                if taxonomy_url:
+                    ## if specified, use that
+                    gd.build_and_ingest_remote(
+                        tempdir, ncbi_taxonomy_data_url=taxonomy_url, db_path=db_path
+                    )
+                else:
+                    ## else use the latest
+                    gd.build_and_ingest_remote(tempdir, db_path=db_path)
 
     def _init_column_names(self) -> list:
         """
@@ -124,7 +137,7 @@ class TaxaPlease:
             print(f"Setting taxonomy version to {url}")
             self._create_database(taxonomy_url=url, db_path=self.db)
             return None
-    
+
     def get_current_taxonomy_url_from_database(self):
         """
         If the database exists, get the taxonomy URL from
@@ -279,7 +292,7 @@ class TaxaPlease:
             return dict(zip(self.column_names, res, strict=False))
         else:
             return None
-        
+
     def get_specified_rank_taxid(self, inputTaxid, targetRank):
         """
         Takes in an NCBI taxid, and a taxonomic rank and traverses
@@ -300,7 +313,7 @@ class TaxaPlease:
         """
         ## check we aren't already at that level
         rec = self.get_record(inputTaxid)
-        
+
         if not rec:
             return None
 
@@ -317,7 +330,7 @@ class TaxaPlease:
         ## recursively get the parent until we find the level
         ## or end up with nothing
         return self.get_specified_rank_taxid(rec["parent_taxid"], targetRank)
-    
+
     def get_specified_rank_record(self, inputTaxid, targetRank):
         """
         Takes in an NCBI taxid, and a taxonomic rank and traverses
@@ -338,7 +351,7 @@ class TaxaPlease:
             taxonomic level.
         """
         rec = self.get_specified_rank_taxid(inputTaxid, targetRank)
-        
+
         if rec:
             return self.get_record(rec)
         else:
@@ -432,7 +445,7 @@ class TaxaPlease:
         return_list = []
 
         if includeSelf:
-            return_list.append(inputTaxid)
+            return_list.append(int(inputTaxid))
 
         tempTaxa = inputTaxid
 
@@ -442,7 +455,8 @@ class TaxaPlease:
             if not tempTaxa:
                 break
 
-            return_list.append(tempTaxa)
+            if tempTaxa not in return_list:
+                return_list.append(tempTaxa)
 
         return tuple(return_list)
 
@@ -471,43 +485,43 @@ class TaxaPlease:
         return tuple(x[0] for x in res)
 
     def get_all_child_taxids(
-            self, inputTaxid: int | str, *, includeSelf: bool = False
-        ) -> tuple:
-            """
-            Takes in an NCBI taxid, gets all child taxids, including
-            children of children, in order of least specific to most specific.
+        self, inputTaxid: int | str, *, includeSelf: bool = False
+    ) -> tuple:
+        """
+        Takes in an NCBI taxid, gets all child taxids, including
+        children of children, in order of least specific to most specific.
 
-            Can optionally include the input taxid in the result.
+        Can optionally include the input taxid in the result.
 
-            Parameters
-            ----------
-            inputTaxid: int or str
-                NCBI taxid
-            includeSelf: bool (default: False)
-                Include the input taxid in the result
+        Parameters
+        ----------
+        inputTaxid: int or str
+            NCBI taxid
+        includeSelf: bool (default: False)
+            Include the input taxid in the result
 
-            Returns
-            -------
-            tuple:
-                tuple of child taxids, from least to most specific
-            """
-            return_list = []
+        Returns
+        -------
+        tuple:
+            tuple of child taxids, from least to most specific
+        """
+        return_list = []
 
-            if includeSelf:
-                return_list.append(inputTaxid)
+        if includeSelf:
+            return_list.append(int(inputTaxid))
 
-            tempTaxa = [inputTaxid]
+        tempTaxa = [inputTaxid]
 
-            while tempTaxa:
-                nextTaxa = []
+        while tempTaxa:
+            nextTaxa = []
 
-                for parentTaxid in tempTaxa:
-                    nextTaxa.extend(self.get_child_taxids(parentTaxid))
+            for parentTaxid in tempTaxa:
+                nextTaxa.extend(self.get_child_taxids(parentTaxid))
 
-                return_list.extend(nextTaxa)
-                tempTaxa = nextTaxa
+            return_list.extend(nextTaxa)
+            tempTaxa = nextTaxa
 
-            return tuple(return_list)
+        return tuple(return_list)
 
     def get_common_parent_taxid(
         self, inputTaxidLeft: int | str, inputTaxidRight: int | str
@@ -720,9 +734,31 @@ class TaxaPlease:
 
         return bool(len(intersection))
 
+    def __get_available_database_tables(self) -> set:
+        """
+        Returns the set of table names in the taxaPlease database
+        """
+        cur = self.con.cursor()
+        res = cur.execute(
+            "SELECT name FROM sqlite_master WHERE type = 'table'"
+        ).fetchall()
+
+        return set([x[0] for x in res])
+
+    def __check_if_table_exists(self, table_name: str) -> bool:
+        """
+        Checks if a specific named table exists in the taxaPlease database
+        """
+        table_list = self.__get_available_database_tables()
+
+        return table_name in table_list
+
     def __checkIfTaxidDeleted(self, inputTaxid: int | str) -> bool:
         """
         Check if a taxid is in the deleted_taxa table
+
+        Raises a NotImplemented exception if the deleted_taxa table
+        is not present
 
         Parameters
         ----------
@@ -734,6 +770,11 @@ class TaxaPlease:
         bool:
             True if in the deleted table, else False
         """
+        if not self.__check_if_table_exists("deleted_taxa"):
+            raise NotImplementedError(
+                "TaxaPlease database built without deleted_taxa support"
+            )
+
         cur = self.con.cursor()
         res = cur.execute(
             "SELECT * FROM deleted_taxa WHERE taxid = ?", [inputTaxid]
@@ -745,6 +786,9 @@ class TaxaPlease:
         """
         Check if a taxid is in the merged table
 
+        Raises a NotImplemented exception if the merged_taxa table
+        is not present
+
         Parameters
         ----------
         inputTaxidLeft: int or str
@@ -755,6 +799,11 @@ class TaxaPlease:
         bool:
             If in the table, return the new taxid, else return False
         """
+        if not self.__check_if_table_exists("merged_taxa"):
+            raise NotImplementedError(
+                "TaxaPlease database built without merged_taxa support"
+            )
+
         cur = self.con.cursor()
         res = cur.execute(
             "SELECT new_taxid FROM merged_taxa WHERE old_taxid = ?", [inputTaxid]
@@ -888,3 +937,63 @@ class TaxaPlease:
         else:
             ## got nothing
             return None
+
+    def is_child_of(self, *, child=None, parent=None, direct=False):
+        """
+        Takes in two taxids labelled "parent" and "child"
+
+        Checks if the "child" taxid is actually a child of "parent"
+
+        Returns True if it is, or False if it isn't
+
+        Can optionally specify direct=True to check if the child is
+        an immediate descendent on the parent.
+
+        Parameters
+        ----------
+        child int or str
+            NCBI taxid
+        parent int or str
+            NCBI taxid
+        direct bool
+            Check if child is direct descendent of parent
+
+        Returns
+        -------
+        Bool
+            True if parent taxid is a parent of child taxid, else False
+        """
+        if not direct:
+            taxids_to_check_for_parent = self.get_all_parent_taxids(child)
+            return int(parent) in taxids_to_check_for_parent
+        else:
+            return int(parent) == self.get_parent_taxid(child)
+
+    def is_parent_of(self, *, parent=None, child=None, direct=False):
+        """
+        Alias of is_child_of
+
+        Takes in two taxids labelled "parent" and "child"
+
+        Checks if the "child" taxid is actually a child of "parent"
+
+        Returns True if it is, or False if it isn't
+
+        Can optionally specify direct=True to check if the child is
+        an immediate descendent on the parent.
+
+        Parameters
+        ----------
+        child int or str
+            NCBI taxid
+        parent int or str
+            NCBI taxid
+        direct bool
+            Check if child is direct descendent of parent
+
+        Returns
+        -------
+        Bool
+            True if parent taxid is a parent of child taxid, else False
+        """
+        return self.is_child_of(parent=parent, child=child, direct=direct)

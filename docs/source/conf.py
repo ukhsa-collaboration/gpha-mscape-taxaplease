@@ -9,7 +9,7 @@
 project = "taxaPlease"
 copyright = "2026, UK Health Security Agency"
 author = "UK Health Security Agency"
-release = "2.2.1"
+release = "2.3.0"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

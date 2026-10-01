@@ -49,6 +49,40 @@ Python.
 
 This should only be run when changing the taxonomy - there is no need to run it more often than this.
 
+Using a local dump of the NCBI taxonomy database
+================================================
+
+If you have a copy of the NCBI taxonomy locally containing at minimum the `nodes.dmp` and `names.dmp` files, you can
+build the taxaPlease database directly from this.
+
+For example, you can obtain a copy of the NCBI taxonomy and extract it using these commands:
+
+.. code-block::
+    :caption: Downloading and extracting the latest NCBI taxonomy
+
+    ## download the latest taxonomy from NCBI
+    wget https://ftp.ncbi.nih.gov/pub/taxonomy/new_taxdump/new_taxdump.tar.gz
+    ## extract it into a folder
+    tar zxvf new_taxdump.tar.gz --one-top-level
+
+You can then build the taxaPlease database from either the CLI or in Python:
+
+.. code-block::
+    :caption: Building the taxaplease database from a local folder on the CLI
+
+    taxaplease taxonomy --set new_taxdump
+
+.. code-block::
+    :caption: Building the taxaPlease database from a local folder in Python
+
+    from taxaplease import TaxaPlease
+
+    tp = TaxaPlease()
+
+    tp.set_taxonomy_url("new_taxdump")
+
+This should only be run when changing the taxonomy - there is no need to run it more often than this.
+
 Storing the taxaPlease sqlite database in a different location
 ==============================================================
 

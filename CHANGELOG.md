@@ -1,6 +1,6 @@
 # Changelog
 
-## [v2.3.0] - 2026-10-01
+## [v2.4.0] - 2026-10-01
 
 ### Added
 
@@ -29,6 +29,118 @@ New databases include an index on `taxa.parent_taxid` which makes child taxid lo
 ### Fixed
 
 None
+
+## [v2.3.0] - 2026-08-25
+
+### Added
+
+A path to a local NCBI taxonomy dump can be provided when building the database. 
+At minimum this must include the `nodes.dmp` and `names.dmp` files, but can optionally
+include the `delnodes.dmp` and `merged.dmp` files also.
+
+First obtain a copy of the taxonomy from somewhere and extract it:
+
+```bash
+## download the latest taxonomy from NCBI
+wget https://ftp.ncbi.nih.gov/pub/taxonomy/new_taxdump/new_taxdump.tar.gz
+## extract it into a folder
+tar zxvf new_taxdump.tar.gz --one-top-level
+```
+
+From the CLI:
+
+```bash
+## build the taxaplease database from a local folder
+taxaplease taxonomy --set new_taxdump
+```
+
+From Python:
+
+```python
+from taxaplease import TaxaPlease
+
+tp = TaxaPlease()
+
+## build the taxaplease database from a local folder
+tp.set_taxonomy_url("new_taxdump")
+```
+
+### Changed
+
+None
+
+### Fixed
+
+None
+
+## [v2.2.3] - 2026-07-23
+
+### Added
+
+New methods added, `is_child_of` and `is_parent_of`:
+
+```python
+from taxaplease import TaxaPlease
+
+tp = TaxaPlease()
+
+## checks if a taxid is a child of another taxid
+print(tp.is_child_of(child=1337, parent=1301))
+>>> True
+
+## alias of is_child_of
+print(tp.is_parent_of(parent=1300, child=1337))
+>>> True
+
+## optional checking if the taxid is a "direct" descendent
+print(tp.is_parent_of(parent=1301, child=1337, direct=True))
+>>> True
+## 1300 is two ranks above 1337, so is not "direct"
+print(tp.is_parent_of(parent=1300, child=1337, direct=True))
+>>> False
+``` 
+
+### Changed
+
+None
+
+### Fixed
+
+None
+
+## [v2.2.2] - 2026-05-27
+
+### Added
+
+None
+
+### Changed
+
+Pins python version <3.14
+
+### Fixed
+
+Fixed a bug that occurs when using the `get_all_parent_taxids()` method on a stringified "1".
+
+Previously, root got included twice - once as a string and once as an int. No such issue
+occurred if 1 was passed as an integer instead.
+
+```python
+from taxaplease import TaxaPlease
+
+tp = TaxaPlease()
+
+## unexpected
+tp.get_all_parent_taxids("1", includeSelf=True)
+>>> ("1", 1,)
+
+## now both invocations work like this
+tp.get_all_parent_taxids(1, includeSelf=True)
+>>> (1,)
+```
+
+We now coerce to int the taxid passed to the method, and do an additional check to make sure
+that any ids added to the return list are not already in the list.
 
 ## [v2.2.1] - 2026-04-30
 
