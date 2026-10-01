@@ -470,6 +470,45 @@ class TaxaPlease:
 
         return tuple(x[0] for x in res)
 
+    def get_all_child_taxids(
+            self, inputTaxid: int | str, *, includeSelf: bool = False
+        ) -> tuple:
+            """
+            Takes in an NCBI taxid, gets all child taxids, including
+            children of children, in order of least specific to most specific.
+
+            Can optionally include the input taxid in the result.
+
+            Parameters
+            ----------
+            inputTaxid: int or str
+                NCBI taxid
+            includeSelf: bool (default: False)
+                Include the input taxid in the result
+
+            Returns
+            -------
+            tuple:
+                tuple of child taxids, from least to most specific
+            """
+            return_list = []
+
+            if includeSelf:
+                return_list.append(inputTaxid)
+
+            tempTaxa = [inputTaxid]
+
+            while tempTaxa:
+                nextTaxa = []
+
+                for parentTaxid in tempTaxa:
+                    nextTaxa.extend(self.get_child_taxids(parentTaxid))
+
+                return_list.extend(nextTaxa)
+                tempTaxa = nextTaxa
+
+            return tuple(return_list)
+
     def get_common_parent_taxid(
         self, inputTaxidLeft: int | str, inputTaxidRight: int | str
     ) -> int | str | None:
