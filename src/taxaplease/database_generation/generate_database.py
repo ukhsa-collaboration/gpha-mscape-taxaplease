@@ -136,6 +136,10 @@ def main(
     print(f"{datetime.datetime.now()} Writing taxa table to {db_path.name}")
     concat_df.to_sql("taxa", con=conn, index_label="taxid", if_exists="replace")
 
+    print(f"{datetime.datetime.now()} Indexing taxa table in {db_path.name}")
+    conn.execute("CREATE INDEX IF NOT EXISTS ix_taxa_parent_taxid ON taxa(parent_taxid)")
+    conn.commit()
+
     print(f"{datetime.datetime.now()} Writing deleted_taxa table to {db_path.name}")
     deleted_ids_df.to_sql("deleted_taxa", con=conn, index_label="taxid", if_exists="replace")
 
