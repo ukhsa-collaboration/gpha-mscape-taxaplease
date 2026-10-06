@@ -1,5 +1,19 @@
 # Changelog
 
+## [v2.4.2] - 2026-10-06
+
+### Added
+
+None
+
+### Changed
+
+Allow Python versions >= 3.14.2 in `pyproject.toml`.
+
+### Fixed
+
+None
+
 ## [v2.4.1] - 2026-10-06
 
 ### Added
