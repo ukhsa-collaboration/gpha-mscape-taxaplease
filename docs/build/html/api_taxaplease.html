@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>TaxaPlease &#8212; taxaPlease 2.3.0 documentation</title>
+    <title>TaxaPlease &#8212; taxaPlease 2.4.1 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=c3c8ae58"></script>
+    <script src="_static/documentation_options.js?v=e9ebdb8f"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api_taxaplease';</script>
@@ -110,7 +110,7 @@
   
   
   
-    <p class="title logo__title">taxaPlease 2.3.0 documentation</p>
+    <p class="title logo__title">taxaPlease 2.4.1 documentation</p>
   
 </a></div>
     
@@ -588,12 +588,57 @@ most specific to least specific.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="taxaplease.TaxaPlease.get_child_taxids">
+<span class="sig-name descname"><span class="pre">get_child_taxids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputTaxid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#taxaplease.TaxaPlease.get_child_taxids" title="Link to this definition">#</a></dt>
+<dd><p>Takes in an NCBI taxid, returns all direct children,
+or an empty tuple if there are none.</p>
+<section id="id17">
+<h2>Parameters<a class="headerlink" href="#id17" title="Link to this heading">#</a></h2>
+<dl class="simple">
+<dt>inputTaxid<span class="classifier">int or str</span></dt><dd><p>NCBI taxid</p>
+</dd>
+</dl>
+</section>
+<section id="id18">
+<h2>Returns<a class="headerlink" href="#id18" title="Link to this heading">#</a></h2>
+<dl class="simple">
+<dt>tuple</dt><dd><p>Child NCBI taxids, or an empty tuple</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="taxaplease.TaxaPlease.get_all_child_taxids">
+<span class="sig-name descname"><span class="pre">get_all_child_taxids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputTaxid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">includeSelf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#taxaplease.TaxaPlease.get_all_child_taxids" title="Link to this definition">#</a></dt>
+<dd><p>Takes in an NCBI taxid, gets all child taxids, including
+children of children, in order of least specific to most specific.</p>
+<p>Can optionally include the input taxid in the result.</p>
+<section id="id19">
+<h2>Parameters<a class="headerlink" href="#id19" title="Link to this heading">#</a></h2>
+<dl class="simple">
+<dt>inputTaxid: int or str</dt><dd><p>NCBI taxid</p>
+</dd>
+<dt>includeSelf: bool (default: False)</dt><dd><p>Include the input taxid in the result</p>
+</dd>
+</dl>
+</section>
+<section id="id20">
+<h2>Returns<a class="headerlink" href="#id20" title="Link to this heading">#</a></h2>
+<dl class="simple">
+<dt>tuple:</dt><dd><p>tuple of child taxids, from least to most specific</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="taxaplease.TaxaPlease.get_common_parent_taxid">
 <span class="sig-name descname"><span class="pre">get_common_parent_taxid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputTaxidLeft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputTaxidRight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#taxaplease.TaxaPlease.get_common_parent_taxid" title="Link to this definition">#</a></dt>
 <dd><p>Takes two NCBI taxids as input, traverses up the taxonomic
 tree to find the first parent taxid that both share.</p>
-<section id="id17">
-<h2>Parameters<a class="headerlink" href="#id17" title="Link to this heading">#</a></h2>
+<section id="id21">
+<h2>Parameters<a class="headerlink" href="#id21" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>inputTaxidLeft: int or str</dt><dd><p>NCBI taxid</p>
 </dd>
@@ -601,8 +646,8 @@ tree to find the first parent taxid that both share.</p>
 </dd>
 </dl>
 </section>
-<section id="id18">
-<h2>Returns<a class="headerlink" href="#id18" title="Link to this heading">#</a></h2>
+<section id="id22">
+<h2>Returns<a class="headerlink" href="#id22" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>Optional[int]:</dt><dd><p>Taxid of shared parent, or None</p>
 </dd>
@@ -615,8 +660,8 @@ tree to find the first parent taxid that both share.</p>
 <span class="sig-name descname"><span class="pre">get_common_parent_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputTaxidLeft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputTaxidRight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#taxaplease.TaxaPlease.get_common_parent_record" title="Link to this definition">#</a></dt>
 <dd><p>Takes two NCBI taxids as input, traverses up the taxonomic
 tree to find the first parent taxid record that both share.</p>
-<section id="id19">
-<h2>Parameters<a class="headerlink" href="#id19" title="Link to this heading">#</a></h2>
+<section id="id23">
+<h2>Parameters<a class="headerlink" href="#id23" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>inputTaxidLeft: int or str</dt><dd><p>NCBI taxid</p>
 </dd>
@@ -624,8 +669,8 @@ tree to find the first parent taxid record that both share.</p>
 </dd>
 </dl>
 </section>
-<section id="id20">
-<h2>Returns<a class="headerlink" href="#id20" title="Link to this heading">#</a></h2>
+<section id="id24">
+<h2>Returns<a class="headerlink" href="#id24" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>Optional[dict]:</dt><dd><p>Record for shared parent, or None</p>
 </dd>
@@ -639,8 +684,8 @@ tree to find the first parent taxid record that both share.</p>
 <dd><p>Takes two NCBI taxids as input, finds the common parent taxa
 and gets the number of levels from each input taxid to that
 parent taxa.</p>
-<section id="id21">
-<h2>Parameters<a class="headerlink" href="#id21" title="Link to this heading">#</a></h2>
+<section id="id25">
+<h2>Parameters<a class="headerlink" href="#id25" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>inputTaxidLeft: int or str</dt><dd><p>NCBI taxid</p>
 </dd>
@@ -648,8 +693,8 @@ parent taxa.</p>
 </dd>
 </dl>
 </section>
-<section id="id22">
-<h2>Returns<a class="headerlink" href="#id22" title="Link to this heading">#</a></h2>
+<section id="id26">
+<h2>Returns<a class="headerlink" href="#id26" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>Optional[dict]:</dt><dd><p>Dictionary with the following keys:
 - left_levels_to_common_parent
@@ -664,46 +709,6 @@ parent taxa.</p>
 <dt class="sig sig-object py" id="taxaplease.TaxaPlease.isArchaea">
 <span class="sig-name descname"><span class="pre">isArchaea</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputTaxid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#taxaplease.TaxaPlease.isArchaea" title="Link to this definition">#</a></dt>
 <dd><p>Is the input taxid in the Archaea superkingdom?</p>
-<section id="id23">
-<h2>Parameters<a class="headerlink" href="#id23" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>inputTaxidLeft: int or str</dt><dd><p>NCBI taxid</p>
-</dd>
-</dl>
-</section>
-<section id="id24">
-<h2>Returns<a class="headerlink" href="#id24" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>bool:</dt><dd><p>True it is or False it isn’t</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="taxaplease.TaxaPlease.isBacteria">
-<span class="sig-name descname"><span class="pre">isBacteria</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputTaxid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#taxaplease.TaxaPlease.isBacteria" title="Link to this definition">#</a></dt>
-<dd><p>Is the input taxid in the Bacteria superkingdom?</p>
-<section id="id25">
-<h2>Parameters<a class="headerlink" href="#id25" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>inputTaxidLeft: int or str</dt><dd><p>NCBI taxid</p>
-</dd>
-</dl>
-</section>
-<section id="id26">
-<h2>Returns<a class="headerlink" href="#id26" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>bool:</dt><dd><p>True it is or False it isn’t</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="taxaplease.TaxaPlease.isEukaryote">
-<span class="sig-name descname"><span class="pre">isEukaryote</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputTaxid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#taxaplease.TaxaPlease.isEukaryote" title="Link to this definition">#</a></dt>
-<dd><p>Is the input taxid in the Eukaryota superkingdom?</p>
 <section id="id27">
 <h2>Parameters<a class="headerlink" href="#id27" title="Link to this heading">#</a></h2>
 <dl class="simple">
@@ -721,9 +726,9 @@ parent taxa.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="taxaplease.TaxaPlease.isVirus">
-<span class="sig-name descname"><span class="pre">isVirus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputTaxid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#taxaplease.TaxaPlease.isVirus" title="Link to this definition">#</a></dt>
-<dd><p>Is the input taxid in the Viruses superkingdom?</p>
+<dt class="sig sig-object py" id="taxaplease.TaxaPlease.isBacteria">
+<span class="sig-name descname"><span class="pre">isBacteria</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputTaxid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#taxaplease.TaxaPlease.isBacteria" title="Link to this definition">#</a></dt>
+<dd><p>Is the input taxid in the Bacteria superkingdom?</p>
 <section id="id29">
 <h2>Parameters<a class="headerlink" href="#id29" title="Link to this heading">#</a></h2>
 <dl class="simple">
@@ -741,9 +746,9 @@ parent taxa.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="taxaplease.TaxaPlease.isPhage">
-<span class="sig-name descname"><span class="pre">isPhage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputTaxid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#taxaplease.TaxaPlease.isPhage" title="Link to this definition">#</a></dt>
-<dd><p>Is the input taxid a phage?</p>
+<dt class="sig sig-object py" id="taxaplease.TaxaPlease.isEukaryote">
+<span class="sig-name descname"><span class="pre">isEukaryote</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputTaxid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#taxaplease.TaxaPlease.isEukaryote" title="Link to this definition">#</a></dt>
+<dd><p>Is the input taxid in the Eukaryota superkingdom?</p>
 <section id="id31">
 <h2>Parameters<a class="headerlink" href="#id31" title="Link to this heading">#</a></h2>
 <dl class="simple">
@@ -761,9 +766,9 @@ parent taxa.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="taxaplease.TaxaPlease.checkTaxidStatus">
-<span class="sig-name descname"><span class="pre">checkTaxidStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputTaxid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#taxaplease.TaxaPlease.checkTaxidStatus" title="Link to this definition">#</a></dt>
-<dd><p>Is the input taxid valid?</p>
+<dt class="sig sig-object py" id="taxaplease.TaxaPlease.isVirus">
+<span class="sig-name descname"><span class="pre">isVirus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputTaxid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#taxaplease.TaxaPlease.isVirus" title="Link to this definition">#</a></dt>
+<dd><p>Is the input taxid in the Viruses superkingdom?</p>
 <section id="id33">
 <h2>Parameters<a class="headerlink" href="#id33" title="Link to this heading">#</a></h2>
 <dl class="simple">
@@ -773,6 +778,46 @@ parent taxa.</p>
 </section>
 <section id="id34">
 <h2>Returns<a class="headerlink" href="#id34" title="Link to this heading">#</a></h2>
+<dl class="simple">
+<dt>bool:</dt><dd><p>True it is or False it isn’t</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="taxaplease.TaxaPlease.isPhage">
+<span class="sig-name descname"><span class="pre">isPhage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputTaxid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#taxaplease.TaxaPlease.isPhage" title="Link to this definition">#</a></dt>
+<dd><p>Is the input taxid a phage?</p>
+<section id="id35">
+<h2>Parameters<a class="headerlink" href="#id35" title="Link to this heading">#</a></h2>
+<dl class="simple">
+<dt>inputTaxidLeft: int or str</dt><dd><p>NCBI taxid</p>
+</dd>
+</dl>
+</section>
+<section id="id36">
+<h2>Returns<a class="headerlink" href="#id36" title="Link to this heading">#</a></h2>
+<dl class="simple">
+<dt>bool:</dt><dd><p>True it is or False it isn’t</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="taxaplease.TaxaPlease.checkTaxidStatus">
+<span class="sig-name descname"><span class="pre">checkTaxidStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputTaxid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#taxaplease.TaxaPlease.checkTaxidStatus" title="Link to this definition">#</a></dt>
+<dd><p>Is the input taxid valid?</p>
+<section id="id37">
+<h2>Parameters<a class="headerlink" href="#id37" title="Link to this heading">#</a></h2>
+<dl class="simple">
+<dt>inputTaxidLeft: int or str</dt><dd><p>NCBI taxid</p>
+</dd>
+</dl>
+</section>
+<section id="id38">
+<h2>Returns<a class="headerlink" href="#id38" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>dict:</dt><dd><p>dictionary with status of id</p>
 </dd>
@@ -785,12 +830,12 @@ parent taxa.</p>
 <span class="sig-name descname"><span class="pre">generate_taxonomy_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DiGraph</span></span></span><a class="headerlink" href="#taxaplease.TaxaPlease.generate_taxonomy_graph" title="Link to this definition">#</a></dt>
 <dd><p>Takes in taxids as positional arguments, gets all the parents
 and returns a networkx directed graph of the result.</p>
-<section id="id35">
-<h2>Parameters<a class="headerlink" href="#id35" title="Link to this heading">#</a></h2>
+<section id="id39">
+<h2>Parameters<a class="headerlink" href="#id39" title="Link to this heading">#</a></h2>
 <p>args</p>
 </section>
-<section id="id36">
-<h2>Returns<a class="headerlink" href="#id36" title="Link to this heading">#</a></h2>
+<section id="id40">
+<h2>Returns<a class="headerlink" href="#id40" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>networkx.DiGraph:</dt><dd><p>networkx directed graph object</p>
 </dd>
@@ -805,15 +850,15 @@ and returns a networkx directed graph of the result.</p>
 generates a networkx directed graph of the result and
 prints an ASCII representation.</p>
 <p>Returns an empty string</p>
-<section id="id37">
-<h2>Parameters<a class="headerlink" href="#id37" title="Link to this heading">#</a></h2>
+<section id="id41">
+<h2>Parameters<a class="headerlink" href="#id41" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>args int or str</dt><dd><p>NCBI taxid</p>
 </dd>
 </dl>
 </section>
-<section id="id38">
-<h2>Returns<a class="headerlink" href="#id38" title="Link to this heading">#</a></h2>
+<section id="id42">
+<h2>Returns<a class="headerlink" href="#id42" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>int</dt><dd><p>-1</p>
 </dd>
@@ -831,15 +876,15 @@ lookup dictionary.</p>
 <p>Technically the Baltimore classification should be a
 Group number from I to VII, but I choose to return the
 corresponding type of nucleic acid and sense instead.</p>
-<section id="id39">
-<h2>Parameters<a class="headerlink" href="#id39" title="Link to this heading">#</a></h2>
+<section id="id43">
+<h2>Parameters<a class="headerlink" href="#id43" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>inputTaxid int or str</dt><dd><p>NCBI taxid</p>
 </dd>
 </dl>
 </section>
-<section id="id40">
-<h2>Returns<a class="headerlink" href="#id40" title="Link to this heading">#</a></h2>
+<section id="id44">
+<h2>Returns<a class="headerlink" href="#id44" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>Optional[str]</dt><dd><p>Baltimore classification as a string (for example, -ssRNA)
 or None</p>
@@ -856,8 +901,8 @@ or None</p>
 <p>Returns True if it is, or False if it isn’t</p>
 <p>Can optionally specify direct=True to check if the child is
 an immediate descendent on the parent.</p>
-<section id="id41">
-<h2>Parameters<a class="headerlink" href="#id41" title="Link to this heading">#</a></h2>
+<section id="id45">
+<h2>Parameters<a class="headerlink" href="#id45" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>child int or str</dt><dd><p>NCBI taxid</p>
 </dd>
@@ -867,8 +912,8 @@ an immediate descendent on the parent.</p>
 </dd>
 </dl>
 </section>
-<section id="id42">
-<h2>Returns<a class="headerlink" href="#id42" title="Link to this heading">#</a></h2>
+<section id="id46">
+<h2>Returns<a class="headerlink" href="#id46" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>Bool</dt><dd><p>True if parent taxid is a parent of child taxid, else False</p>
 </dd>
@@ -885,8 +930,8 @@ an immediate descendent on the parent.</p>
 <p>Returns True if it is, or False if it isn’t</p>
 <p>Can optionally specify direct=True to check if the child is
 an immediate descendent on the parent.</p>
-<section id="id43">
-<h2>Parameters<a class="headerlink" href="#id43" title="Link to this heading">#</a></h2>
+<section id="id47">
+<h2>Parameters<a class="headerlink" href="#id47" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>child int or str</dt><dd><p>NCBI taxid</p>
 </dd>
@@ -896,8 +941,8 @@ an immediate descendent on the parent.</p>
 </dd>
 </dl>
 </section>
-<section id="id44">
-<h2>Returns<a class="headerlink" href="#id44" title="Link to this heading">#</a></h2>
+<section id="id48">
+<h2>Returns<a class="headerlink" href="#id48" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>Bool</dt><dd><p>True if parent taxid is a parent of child taxid, else False</p>
 </dd>
@@ -970,6 +1015,8 @@ an immediate descendent on the parent.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#taxaplease.TaxaPlease.get_species_taxid"><code class="docutils literal notranslate"><span class="pre">TaxaPlease.get_species_taxid()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#taxaplease.TaxaPlease.get_superkingdom_taxid"><code class="docutils literal notranslate"><span class="pre">TaxaPlease.get_superkingdom_taxid()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#taxaplease.TaxaPlease.get_all_parent_taxids"><code class="docutils literal notranslate"><span class="pre">TaxaPlease.get_all_parent_taxids()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#taxaplease.TaxaPlease.get_child_taxids"><code class="docutils literal notranslate"><span class="pre">TaxaPlease.get_child_taxids()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#taxaplease.TaxaPlease.get_all_child_taxids"><code class="docutils literal notranslate"><span class="pre">TaxaPlease.get_all_child_taxids()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#taxaplease.TaxaPlease.get_common_parent_taxid"><code class="docutils literal notranslate"><span class="pre">TaxaPlease.get_common_parent_taxid()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#taxaplease.TaxaPlease.get_common_parent_record"><code class="docutils literal notranslate"><span class="pre">TaxaPlease.get_common_parent_record()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#taxaplease.TaxaPlease.get_number_of_levels_between_taxa"><code class="docutils literal notranslate"><span class="pre">TaxaPlease.get_number_of_levels_between_taxa()</span></code></a></li>
