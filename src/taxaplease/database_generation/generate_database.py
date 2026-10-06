@@ -155,6 +155,7 @@ def build_and_ingest_local(tempdir, *, ncbi_taxonomy_data_url=None, db_path=None
         db_path = Path(db_dir, "taxa.db")
     else:
         db_dir = Path(db_path).parent
+        db_path = Path(db_path)
 
     conn = sqlite3.connect(db_path)
 
@@ -315,6 +316,7 @@ def build_and_ingest_remote(tempdir, *, ncbi_taxonomy_data_url=None, db_path=Non
         db_path = Path(db_dir, "taxa.db")
     else:
         db_dir = Path(db_path).parent
+        db_path = Path(db_path)
 
     conn = sqlite3.connect(db_path)
 
