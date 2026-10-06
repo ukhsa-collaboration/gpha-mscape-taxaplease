@@ -1,5 +1,19 @@
 # Changelog
 
+## [v2.4.1] - 2026-10-06
+
+### Added
+
+None
+
+### Changed
+
+None
+
+### Fixed
+
+Fixed a bug that caused the taxaPlease database to fail to build when using a path to a local taxdump with a trailing slash.
+
 ## [v2.4.0] - 2026-10-01
 
 ### Added
