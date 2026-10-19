@@ -20,7 +20,13 @@ None
 
 ### Fixed
 
-None
+`pyproject.toml` amended:
+
+```toml
+requires-python = ">=3.10,!=3.14.0,!=3.14.1"
+```
+
+This now specifically excludes incompatible python versions.
 
 ## [v2.4.2] - 2026-10-06
 
