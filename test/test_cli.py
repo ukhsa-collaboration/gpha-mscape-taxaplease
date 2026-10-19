@@ -232,3 +232,38 @@ def test_merged_taxid(instantiate_db):
         "isDeleted": False,
         "isMerged": photobacteriumProfundumNew,
     }
+
+
+def test_children(instantiate_db):
+    ## lassa virus GA391 and Josiah are the only children of Mammarenavirus lassaense
+    taxid_lassa = 3052310
+    taxid_lassa_ga391 = 11621
+    taxid_lassa_josiah = 11622
+
+    result = subprocess.run(
+        ["taxaplease", "taxid", "--children", str(taxid_lassa)],
+        capture_output=True,
+    )
+
+    assert set(json.loads(result.stdout.decode("utf-8"))) == {
+        taxid_lassa_ga391,
+        taxid_lassa_josiah,
+    }
+
+
+def test_children_all(instantiate_db):
+    taxid_mammarenavirus = 1653394
+    ## should contain species level taxa
+    taxid_lassa = 3052310
+    ## and should also contain anything below a species since we are getting all
+    taxid_lassa_josiah = 11622
+
+    result = subprocess.run(
+        ["taxaplease", "taxid", "--children-all", str(taxid_mammarenavirus)],
+        capture_output=True,
+    )
+
+    children = json.loads(result.stdout.decode("utf-8"))
+
+    assert taxid_lassa in children
+    assert taxid_lassa_josiah in children
