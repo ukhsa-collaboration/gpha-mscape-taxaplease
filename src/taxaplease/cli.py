@@ -53,6 +53,10 @@ def init_argparser():
         metavar="<taxid>",
     )
     group_taxid.add_argument("--parents-all", help="Get taxids for all parents", metavar="<taxid>")
+    group_taxid.add_argument("--children", help="Get taxids for direct children", metavar="<taxid>")
+    group_taxid.add_argument(
+        "--children-all", help="Get taxids for all children recursivley", metavar="<taxid>"
+    )
     group_taxid.add_argument(
         "--common",
         help="Get the taxid for the closest common parent taxon between two taxids",
@@ -131,6 +135,10 @@ def handle_taxid_request(args, taxapleaseObj):
         return taxapleaseObj.get_superkingdom_taxid(args.superkingdom)
     elif args.parents_all:
         return taxapleaseObj.get_all_parent_taxids(args.parents_all)
+    elif args.children:
+        return taxapleaseObj.get_child_taxids(args.children)
+    elif args.children_all:
+        return taxapleaseObj.get_all_child_taxids(args.children_all)
     elif args.common:
         return taxapleaseObj.get_common_parent_taxid(*args.common)
     else:

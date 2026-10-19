@@ -1,5 +1,27 @@
 # Changelog
 
+## [v2.5.0] - 2026-10-19
+
+### Added
+
+CLI flags for getting child taxids:
+
+```bash
+taxaplease taxid --children 3052297
+[2850049]
+
+taxaplease taxid --children-all 3052310
+[11621, 11622]
+```
+
+### Changed
+
+None
+
+### Fixed
+
+None
+
 ## [v2.4.2] - 2026-10-06
 
 ### Added
