@@ -1,5 +1,36 @@
 # Changelog
 
+## [v2.5.1] - 2026-11-03
+
+### Added
+
+A new `isFungi()` method to go alongside `isBacteria`, `isVirus`, `isEukaryote`, `isArchaea` and `isPhage`.
+
+```python
+from taxaplease import TaxaPlease
+
+tp = TaxaPlease()
+
+candida_albicans_taxid = 5476
+
+print(tp.isFungi(candida_albicans_taxid))
+>>> True
+
+```
+
+```bash
+## returns true
+taxaplease check --is-fungi 5476
+```
+
+### Changed
+
+None
+
+### Fixed
+
+None
+
 ## [v2.5.0] - 2026-10-19
 
 ### Added
