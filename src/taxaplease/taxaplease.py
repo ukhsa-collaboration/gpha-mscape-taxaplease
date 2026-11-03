@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup as bs
 
 import taxaplease.taxaplease_data as tpData
 
-__version__ = "2.5.0"
+__version__ = "2.5.1"
 
 
 class TaxaPlease:
@@ -733,6 +733,25 @@ class TaxaPlease:
         intersection = phages.intersection(parents)
 
         return bool(len(intersection))
+
+    def isFungi(self, inputTaxid: int | str) -> bool:
+        """
+        Is the input taxid in the Fungi kingdom?
+
+        Parameters
+        ----------
+        inputTaxidLeft: int or str
+            NCBI taxid
+
+        Returns
+        -------
+        bool:
+            True it is or False it isn't
+        """
+        targetTaxid = 4751
+
+        ## check the parents
+        return targetTaxid in self.get_all_parent_taxids(inputTaxid, includeSelf=True)
 
     def __get_available_database_tables(self) -> set:
         """
