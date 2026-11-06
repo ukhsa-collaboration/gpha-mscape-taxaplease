@@ -1,6 +1,21 @@
 # Changelog
 
-## [v2.5.2] - 2026-11-03
+## [v2.5.2] - 2026-11-06
+
+### Removed pinned Sphinx version
+In gpha-mscape-taxaplease/docs/requirements.txt, something pins sphinx~=4.0 while another dependency (probably a theme or extension) requires sphinx>=7,<9. No version satisfies both, so OSV couldn’t resolve the dependency tree.
+
+
+Further identification of the issue:
+```bash
+grep -n 'html_theme' gpha-mscape-taxaplease/docs/source/conf.py gpha-mscape-taxaplease-pf/docs/source/conf.py
+gpha-mscape-taxaplease/docs/source/conf.py:26:html_theme = "pydata_sphinx_theme"
+gpha-mscape-taxaplease/docs/source/conf.py:29:# html_theme_options = {"show_nav_level": 4,  "navigation_depth": 2}
+```
+This suggests Both repos use pydata_sphinx_theme, so furo is the leftover. So Furo can be removed from the requirements file.
+
+
+## [v2.5.1] - 2026-11-03
 
 ### Added
 
