@@ -1,5 +1,15 @@
 # Changelog
 
+## [v2.5.2] - 2026-11-06
+
+### Added
+None
+### Changed
+Updated sphinx dependencies
+
+### Fixed 
+None
+
 ## [v2.5.1] - 2026-11-03
 
 ### Added
