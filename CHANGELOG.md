@@ -1,13 +1,17 @@
 # Changelog
 
-## [v2.5.2] - 2026-11-06
+## [v2.5.2] - 2026-11-09
 
 ### Added
-None
-### Changed
-Updated sphinx dependencies
 
-### Fixed 
+None
+
+### Changed
+
+Updated Sphinx dependencies to resolve <https://github.com/ukhsa-collaboration/gpha-mscape-taxaplease/issues/35>.
+
+### Fixed
+
 None
 
 ## [v2.5.1] - 2026-11-03
